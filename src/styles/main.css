@@ -1,0 +1,47 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family:'Open Sans', sans-serif;
+}
+
+*:focus{
+    outline:none;
+}
+
+html , body{
+    min-height: 100vh;
+}
+
+.active {
+    display: flex;
+}
+
+.inactive{
+    display: none;
+}
+
+.hidden{
+    opacity: 0;
+}
+
+input:focus{
+    outline: none;
+    background-color: rgb(0,0,0,.2);
+}
+
+button:hover{
+    cursor: pointer;
+    background-color: blue;
+}
+
+button:focus{
+    background-color: blue;
+}
+
+button{
+    background-color: #3A018F;
+    color: white;
+    border: none;
+    font-size: 1.1rem;
+}
