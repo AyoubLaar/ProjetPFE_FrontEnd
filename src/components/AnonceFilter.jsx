@@ -10,10 +10,16 @@ import Box from "@mui/material/Box";
 import FmdGoodRoundedIcon from "@mui/icons-material/FmdGoodRounded";
 import Toolbar from "@mui/material/Toolbar";
 import ListIcon from "@mui/icons-material/List";
+import { Autocomplete } from "@mui/joy";
+import villes from "../Data/villes.json";
 
-export default function AnonceFilter({ Searchfilter, setSearchfilter }) {
+export default function AnonceFilter({
+  Searchfilter,
+  setSearchfilter,
+  setisList,
+  isList,
+}) {
   const [Categories, setCategories] = React.useState(Searchfilter.Categories);
-  const [isList, setisList] = React.useState(true);
 
   const setCategorie = (id) => {
     setCategories(
@@ -31,6 +37,8 @@ export default function AnonceFilter({ Searchfilter, setSearchfilter }) {
     setMaxPrix(Searchfilter.maxPrix);
     setChambres(Searchfilter.chambres);
     setSalles(Searchfilter.salles);
+    setVille(Searchfilter.ville);
+    setRegion(Searchfilter.region);
   };
 
   const [open, setOpen] = React.useState(false);
@@ -57,6 +65,8 @@ export default function AnonceFilter({ Searchfilter, setSearchfilter }) {
       chambres: chambres,
       salles: salles,
       Categories: Categories,
+      region: region,
+      ville: ville,
     });
   };
 
@@ -64,15 +74,22 @@ export default function AnonceFilter({ Searchfilter, setSearchfilter }) {
   const [maxPrix, setMaxPrix] = React.useState(Searchfilter.maxPrix);
   const [chambres, setChambres] = React.useState(Searchfilter.chambres);
   const [salles, setSalles] = React.useState(Searchfilter.salles);
+  const [ville, setVille] = React.useState(Searchfilter.ville);
+  const [region, setRegion] = React.useState(Searchfilter.region);
 
   return (
     <>
       <Toolbar
         sx={{
+          zIndex: "1",
           display: "flex",
           flexDirection: "row",
+          justifyContent: "space-between",
           gap: "10px",
+          paddingTop: "0",
+          paddingBottom: "0",
           flexWrap: "wrap",
+          backgroundColor: "white",
         }}
       >
         <Button
@@ -100,17 +117,9 @@ export default function AnonceFilter({ Searchfilter, setSearchfilter }) {
           {isList ? "Map" : "List"}
         </Button>
       </Toolbar>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        PaperProps={{
-          sx: {
-            padding: "0",
-          },
-        }}
-      >
+      <Dialog open={open} onClose={handleClose}>
         <DialogContent>
-          <DialogTitle sx={{ padding: 0, paddingTop: "20px", marginBottom: 0 }}>
+          <DialogTitle sx={{ padding: 0, paddingTop: "0", marginBottom: 0 }}>
             Prix
           </DialogTitle>
           <TextField
@@ -118,7 +127,7 @@ export default function AnonceFilter({ Searchfilter, setSearchfilter }) {
             margin="dense"
             id="name"
             label="Min Prix"
-            type="email"
+            type="number"
             fullWidth
             variant="standard"
             value={minPrix}
@@ -129,7 +138,7 @@ export default function AnonceFilter({ Searchfilter, setSearchfilter }) {
             margin="dense"
             id="name"
             label="Max Prix"
-            type="email"
+            type="number"
             fullWidth
             variant="standard"
             value={maxPrix}
@@ -146,7 +155,7 @@ export default function AnonceFilter({ Searchfilter, setSearchfilter }) {
             margin="dense"
             id="name"
             label="Chambres"
-            type="email"
+            type="number"
             fullWidth
             variant="standard"
             value={chambres}
@@ -160,11 +169,46 @@ export default function AnonceFilter({ Searchfilter, setSearchfilter }) {
             margin="dense"
             id="name"
             label="Salles de bain"
-            type="email"
+            type="number"
             fullWidth
             variant="standard"
             value={salles}
             onChange={(e) => setSalles(e.target.value)}
+          />
+          <DialogTitle sx={{ padding: 0, paddingTop: "20px", marginBottom: 0 }}>
+            Region
+          </DialogTitle>
+          <Autocomplete
+            disablePortal
+            options={villes.map((ville) => ville[0])}
+            sx={{ width: 300 }}
+            renderInput={() => (
+              <TextField
+                autoFocus
+                margin="dense"
+                id="name"
+                label="Region"
+                type="text"
+                fullWidth
+                variant="standard"
+                value={region}
+                onChange={(e) => setRegion(e.target.value)}
+              />
+            )}
+          />
+          <DialogTitle sx={{ padding: 0, paddingTop: "20px", marginBottom: 0 }}>
+            Ville
+          </DialogTitle>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Ville"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={ville}
+            onChange={(e) => setVille(e.target.value)}
           />
           <DialogTitle
             sx={{ padding: 0, paddingTop: "20px", marginBottom: "0px" }}

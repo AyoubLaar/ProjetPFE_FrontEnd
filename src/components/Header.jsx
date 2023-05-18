@@ -18,7 +18,7 @@ import SearchIcon from "@mui/icons-material/Search";
 
 const Header = () => {
   const pages = [
-    { innerHTML: "Search", icon: <SearchIcon />, href: "/Search" },
+    { innerHTML: "Search", icon: <SearchIcon />, href: "/" },
     {
       innerHTML: "Publier Anonce",
       icon: <AddCircleOutlineOutlinedIcon />,
@@ -51,22 +51,6 @@ const Header = () => {
       <List>
         {pages.map((page) => (
           <ListItem sx={{ padding: 0 }}>
-            {/* <ListItemButton
-              color="black"
-              href={`/${page.innerHTML}`}
-              sx={{
-                borderBottom: "1px solid #1565c0",
-                "&:hover": { backgroundColor: "lightgray" },
-              }}
-            >
-              <ListItemIcon sx={{ color: "primary.dark" }}>
-                {page.icon}
-              </ListItemIcon>
-              <ListItemText
-                primary={page.innerHTML}
-                sx={{ color: "primary.dark" }}
-              />
-            </ListItemButton> */}
             <Button
               sx={{
                 width: "100%",
@@ -99,10 +83,7 @@ const Header = () => {
 
   return (
     <>
-      <AppBar
-        position="sticky"
-        sx={{ boxShadow: "none", backgroundColor: "white" }}
-      >
+      <AppBar position="sticky" sx={{ backgroundColor: "white" }}>
         <Toolbar sx={{ color: "black" }}>
           <Button color="Black" href="/" sx={{ padding: 0 }}>
             <Typography variant="h5" color="primary.dark" fontWeight={600}>

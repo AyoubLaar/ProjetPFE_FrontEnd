@@ -8,18 +8,13 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Search from "./Pages/Search.jsx";
 import Anonce from "./Pages/Anonce.jsx";
 import ErrorPage from "./Pages/error-page.jsx";
-import Home from "./Pages/Home";
 import Carte from "./components/Carte";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/Search",
     element: <Search />,
+    errorElement: <ErrorPage />,
   },
   {
     path: "/SignIn",
