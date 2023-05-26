@@ -1,11 +1,12 @@
 import { useParams } from "react-router-dom";
 import Header from "../components/Header";
-import { Stack, Paper, Typography, CardMedia } from "@mui/material";
+import { Button, Stack, Paper, Typography, CardMedia } from "@mui/material";
+import MapIcon from "@mui/icons-material/Map";
 import React from "react";
+import ListCommentaire from "../components/ListCommentaires";
 
 const Anonce = () => {
   const idAnonce = useParams().id;
-  const fontsize = 20;
   const [Data, setData] = React.useState({
     Nom: "",
     Surface: "",
@@ -18,11 +19,12 @@ const Anonce = () => {
     longitude: "",
     email: "",
     telephone: "",
+    Commentaires: [],
   });
   React.useEffect(() => {
     // fetch();
     setData({
-      Nom: "Hotel Hotel Hotel Hotel Hotel  Hotel Hotel Hotel Hotel ",
+      Nom: "Serene Haven ",
       nbrEtoiles: "5",
       Surface: "400",
       nbreSalleBain: "3",
@@ -30,106 +32,153 @@ const Anonce = () => {
       nbreEtages: "3",
       prix: "100",
       description:
-        "description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description ",
+        "Nestled amidst breathtaking natural surroundings, Serene Haven offers a tranquil retreat for weary travelers seeking solace and rejuvenation. This luxurious boutique hotel blends modern elegance with a touch of rustic charm, creating a captivating ambiance that embraces both comfort and serenity. From the moment you step through its doors, you'll be greeted by warm hospitality and impeccable service, ensuring a memorable stay. Indulge in the opulent rooms and suites adorned with tasteful decor, plush furnishings, and panoramic views that showcase the beauty of the surrounding landscape. Unwind in the spa, where skilled therapists provide blissful treatments to restore your mind, body, and soul. Savor exquisite culinary delights at the hotel's gourmet restaurant, where the expert chefs artfully craft a fusion of international flavors. Whether you're seeking a romantic getaway, a peaceful retreat, or a haven for your next business trip, Serene Haven promises an enchanting experience that will leave you refreshed and inspired ",
       latitude: "33.57094853077502",
       longitude: "-7.604995965957642",
       ville: "Casablanca",
       region: "Great Casablanca",
       email: "ayoublaarouchi03@gmail.com",
       telephone: "0684629206",
+      Commentaires: [
+        {
+          membre: { nom: "Laarouchi", prenom: "Ayoub" },
+          datePub: new Date(),
+          contenu: "hadchi nadi bzaf !",
+        },
+        {
+          membre: { nom: "Laarouchi", prenom: "Ayoub" },
+          datePub: new Date(),
+          contenu: "hadchi nadi bzaf !",
+        },
+        {
+          membre: { nom: "Laarouchi", prenom: "Ayoub" },
+          datePub: new Date(),
+          contenu: "hadchi nadi bzaf !",
+        },
+        {
+          membre: { nom: "Laarouchi", prenom: "Ayoub" },
+          datePub: new Date(),
+          contenu: "hadchi nadi bzaf !",
+        },
+        {
+          membre: { nom: "Laarouchi", prenom: "Ayoub" },
+          datePub: new Date(),
+          contenu: "hadchi nadi bzaf !",
+        },
+        {
+          membre: { nom: "Laarouchi", prenom: "Ayoub" },
+          datePub: new Date(),
+          contenu: "hadchi nadi bzaf !",
+        },
+        {
+          membre: { nom: "Laarouchi", prenom: "Ayoub" },
+          datePub: new Date(),
+          contenu: "hadchi nadi bzaf !",
+        },
+        {
+          membre: { nom: "Laarouchi", prenom: "Ayoub" },
+          datePub: new Date(),
+          contenu: "hadchi nadi bzaf !",
+        },
+      ],
     });
   }, []);
   return (
     <>
       <Header />
-      <Stack
-        direction="column"
-        padding="2rem 2rem"
-        gap={3}
-        width="100%"
-        sx={{
-          textAlign: {
-            xs: "center",
-            sm: "left",
-          },
-        }}
-      >
-        <Stack
-          gap={{
-            sm: 1,
-            md: 2,
-          }}
-          direction={{
-            sm: "column",
-            md: "row",
-          }}
-          sx={{
-            alignItems: {
-              sm: "center",
-              md: "flex-start",
-            },
-          }}
-        >
-          <CardMedia
-            image="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&w=350&dpr=2"
-            sx={{
-              height: "400px",
-              minWidth: {
-                md: "500px",
-                xs: "100%",
-              },
+      <Paper elevation={5} sx={{ width: "90%", margin: "15px auto" }}>
+        <Stack direction="column" padding="2rem 2rem" gap={3} width="100%">
+          <Stack
+            gap={{
+              sm: 1,
+              md: 2,
             }}
-          ></CardMedia>
+            direction={{
+              sm: "column",
+              md: "row",
+            }}
+          >
+            <CardMedia
+              image="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&w=350&dpr=2"
+              sx={{
+                height: "400px",
+                minWidth: {
+                  md: "500px",
+                  xs: "100%",
+                },
+              }}
+            ></CardMedia>
+            <Stack direction="column" gap={1}>
+              <Typography
+                variant="h5"
+                fontWeight={700}
+                color="black"
+                fontFamily="fantasy"
+                sx={{ overflowWrap: "break-word" }}
+              >
+                {Data.Nom}
+              </Typography>
+              <Typography variant="body1">
+                {"Location : " + Data.ville + " , " + Data.region}
+              </Typography>
+              <Typography variant="body1">{Data.nbrEtoiles}/5 stars</Typography>
+              <Typography variant="body1">prix : {Data.prix} dh</Typography>
+              <Typography variant="body1">
+                surface : {Data.surface} m2
+              </Typography>
+              <Typography variant="body1">
+                Nombre Etages : {Data.nbreEtages}{" "}
+              </Typography>
+              <Typography variant="body1">
+                Nombre Chambres : {Data.nbreChambres}{" "}
+              </Typography>
+              <Typography variant="body1">
+                Nombre Salles de bain : {Data.nbreSalleBain}{" "}
+              </Typography>
+              <a href={"/Search/" + idAnonce}>
+                <Button
+                  startIcon={<MapIcon />}
+                  variant="contained"
+                  sx={{ width: "fit-content" }}
+                >
+                  Show On Map
+                </Button>
+              </a>
+            </Stack>
+          </Stack>
           <Stack direction="column" gap={1}>
-            <Typography
-              variant="h4"
-              fontWeight={500}
-              color="black"
-              sx={{ overflowWrap: "break-word" }}
-            >
-              {Data.Nom}
+            <Typography variant="h5" fontWeight={700}>
+              Summary :
             </Typography>
-            <Typography fontSize={fontsize}>
-              {Data.ville + " , " + Data.region}
-            </Typography>
-            <Typography fontSize={fontsize}>
-              {Data.nbrEtoiles}/5 stars
-            </Typography>
-            <Typography fontSize={fontsize}>prix : {Data.prix} dh</Typography>
-            <Typography fontSize={fontsize}>
-              surface : {Data.surface} m2
-            </Typography>
-            <Typography fontSize={fontsize}>
-              Nombre Etages : {Data.nbreEtages}{" "}
-            </Typography>
-            <Typography fontSize={fontsize}>
-              Nombre Chambres : {Data.nbreChambres}{" "}
-            </Typography>
-            <Typography fontSize={fontsize}>
-              Nombre Salles de bain : {Data.nbreSalleBain}{" "}
+            <Typography variant="body1" sx={{ overflowWrap: "break-word" }}>
+              {Data.description}
             </Typography>
           </Stack>
+          <Stack direction="column" gap={1}>
+            <Typography variant="h5" fontWeight={700}>
+              Contact :
+            </Typography>
+            <Typography variant="body1" sx={{ overflowWrap: "break-word" }}>
+              Email : {Data.email}
+            </Typography>
+            <Typography variant="body1" sx={{ overflowWrap: "break-word" }}>
+              Telephone : {Data.telephone}
+            </Typography>
+          </Stack>
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
+            <a href={"/Reserver/" + idAnonce}>
+              <Button variant="contained">Reserver</Button>
+            </a>
+          </div>
+          <ListCommentaire commentaires={Data.Commentaires} />
         </Stack>
-        <Stack direction="column" gap={1}>
-          <Typography variant="h4" fontWeight={500}>
-            Summary :
-          </Typography>
-          <Typography fontSize={fontsize} sx={{ overflowWrap: "break-word" }}>
-            {Data.description}
-          </Typography>
-        </Stack>
-        <Stack direction="column" gap={1}>
-          <Typography variant="h4" fontWeight={500}>
-            Contact :
-          </Typography>
-          <Typography fontSize={fontsize} sx={{ overflowWrap: "break-word" }}>
-            Email : {Data.email}
-          </Typography>
-          <Typography fontSize={fontsize} sx={{ overflowWrap: "break-word" }}>
-            Telephone : {Data.telephone}
-          </Typography>
-        </Stack>
-      </Stack>
+      </Paper>
     </>
   );
 };

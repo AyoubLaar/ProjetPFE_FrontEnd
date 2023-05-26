@@ -5,7 +5,8 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Carte from "../components/Carte";
 import List from "../components/List";
-import { Context } from "../Contexts/SearchContext";
+import { Context } from "../context/SearchContext";
+import { useParams } from "react-router-dom";
 
 const Search = () => {
   const [filter, setfilter] = React.useState({
@@ -22,12 +23,18 @@ const Search = () => {
       };
     }),
   });
-
-  React.useEffect(() => {});
-
-  const [id_anonce_chosen, setIdAnonce] = React.useState(null);
+  const [id_anonce_chosen, setIdAnonce] = React.useState(
+    useParams().id || null
+  );
   const [Anonces, setAnonces] = React.useState(null);
-  const [isList, setisList] = React.useState(true);
+  const [isList, setisList] = React.useState(id_anonce_chosen == null);
+
+  React.useEffect(() => {
+    //fetch(with filter)
+    fetch("http://localhost:8080/Anonce")
+      .then((res) => res.json())
+      .then((data) => console.log(data));
+  });
 
   return (
     <>

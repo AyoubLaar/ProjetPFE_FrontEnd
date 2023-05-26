@@ -8,7 +8,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Search from "./Pages/Search.jsx";
 import Anonce from "./Pages/Anonce.jsx";
 import ErrorPage from "./Pages/error-page.jsx";
-import Carte from "./components/Carte";
+import Publier from "./Pages/Publier";
 
 const router = createBrowserRouter([
   {
@@ -22,15 +22,16 @@ const router = createBrowserRouter([
   },
   {
     path: "/Publier",
-    element: <h1>Publier</h1>,
+    element: <Publier />,
   },
   {
     path: "/Anonce/:id",
     element: <Anonce />,
   },
   {
-    path: "/Map",
-    element: <Carte />,
+    path: "/Search/:id",
+    element: <Search />,
+    errorElement: <ErrorPage />,
   },
 ]);
 

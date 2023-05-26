@@ -1,31 +1,32 @@
 import React from "react";
 import { Paper, Button, Typography, Stack } from "@mui/material";
 import { useContext } from "react";
-import { Context } from "../Contexts/SearchContext";
+import { Context } from "../context/SearchContext";
+import FmdGoodRoundedIcon from "@mui/icons-material/FmdGoodRounded";
 
-export default function Anonce({ idAnonce }) {
+export default function Anonce({
+  idAnonce,
+  Nom,
+  prix,
+  latitude,
+  longitude,
+  nbreEtoiles,
+}) {
   // 0 setAnonceId , 1 setisList
+
   const context_functions = useContext(Context);
   const [Data, setData] = React.useState({
-    Nom: "",
-    Surface: "",
-    nbreSalleBain: "",
-    nbreChambres: "",
-    nbreEtages: "",
-    prix: "",
-    latitude: "",
-    longitude: "",
-    categories: [],
+    Nom: Nom || "",
+    prix: prix || "",
+    latitude: latitude || "",
+    longitude: longitude || "",
+    nbreEtoiles: nbreEtoiles || "",
   });
   React.useEffect(() => {
-    // fetch();
+    //Not needed , temporary
     setData({
-      Nom: "HotelHotelHotelHotelHotelHotel",
-      nbrEtoiles: "5",
-      Surface: "400",
-      nbreSalleBain: "3",
-      nbreChambres: "3",
-      nbreEtages: "3",
+      Nom: "Serene Haven",
+      nbreEtoiles: "5",
       prix: "100",
       latitude: "33.57094853077502",
       longitude: "-7.604995965957642",
@@ -39,12 +40,32 @@ export default function Anonce({ idAnonce }) {
         variant="elevation"
         elevation={3}
         sx={{
+          position: "relative",
           width: "300px",
           height: "400px",
           backgroundImage:
             "url(https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&w=350&dpr=2)",
         }}
       >
+        <Button
+          variant="outlined"
+          sx={{
+            position: "absolute",
+            top: "0",
+            right: "0",
+            color: "white",
+            border: "1px solid white",
+            borderRadius: "0",
+            "&:hover": {
+              borderColor: "white",
+              backgroundColor: "rgb(255,255,255,.1)",
+            },
+          }}
+          startIcon={<FmdGoodRoundedIcon color="error" />}
+          href={"/Search/" + idAnonce}
+        >
+          Map
+        </Button>
         <a
           href={`/Anonce/${idAnonce}`}
           style={{
@@ -64,21 +85,21 @@ export default function Anonce({ idAnonce }) {
             }}
           >
             <Typography
-              variant="h4"
-              fontWeight={900}
+              variant="h5"
+              fontWeight={700}
               overflow="hidden"
               textOverflow="ellipsis"
             >
               {Data.Nom}
             </Typography>
-            <Typography variant="h6" fontWeight={500}>
-              {Data.nbrEtoiles}/5 stars
+            <Typography variant="body1" fontWeight={500}>
+              {Data.nbreEtoiles}/5 stars
             </Typography>
-            <Typography variant="h6" fontWeight={500}>
+            <Typography variant="body1" fontWeight={500}>
               prix : {Data.prix} dh
             </Typography>
             <Typography
-              variant="subtitle1"
+              variant="body1"
               fontWeight={500}
               overflow="hidden"
               textOverflow="ellipsis"
@@ -88,16 +109,6 @@ export default function Anonce({ idAnonce }) {
           </Stack>
         </a>
       </Paper>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => {
-          context_functions.setIdAnonce(idAnonce);
-          context_functions.setisList(false);
-        }}
-      >
-        Show On Map
-      </Button>
     </Stack>
   );
 }

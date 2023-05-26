@@ -10,8 +10,8 @@ import Box from "@mui/material/Box";
 import FmdGoodRoundedIcon from "@mui/icons-material/FmdGoodRounded";
 import Toolbar from "@mui/material/Toolbar";
 import ListIcon from "@mui/icons-material/List";
-import { Autocomplete } from "@mui/joy";
-import villes from "../Data/villes.json";
+import { Autocomplete } from "@mui/material";
+import villesRegions from "../Data/villes.json";
 
 export default function AnonceFilter({
   Searchfilter,
@@ -20,6 +20,10 @@ export default function AnonceFilter({
   isList,
 }) {
   const [Categories, setCategories] = React.useState(Searchfilter.Categories);
+  const villes = villesRegions.map((villeRegion) => villeRegion[0]);
+  const regions = Array.from(
+    new Set(villesRegions.map((villeRegion) => villeRegion[1]))
+  );
 
   const setCategorie = (id) => {
     setCategories(
@@ -30,7 +34,6 @@ export default function AnonceFilter({
       )
     );
   };
-
   const init = () => {
     setCategories(Searchfilter.Categories);
     setMinPrix(Searchfilter.minPrix);
@@ -68,6 +71,7 @@ export default function AnonceFilter({
       region: region,
       ville: ville,
     });
+    console.log("filter set !");
   };
 
   const [minPrix, setMinPrix] = React.useState(Searchfilter.minPrix);
@@ -117,7 +121,7 @@ export default function AnonceFilter({
           {isList ? "Map" : "List"}
         </Button>
       </Toolbar>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={handleClose} scroll="body">
         <DialogContent>
           <DialogTitle sx={{ padding: 0, paddingTop: "0", marginBottom: 0 }}>
             Prix
@@ -125,18 +129,18 @@ export default function AnonceFilter({
           <TextField
             autoFocus
             margin="dense"
-            id="name"
             label="Min Prix"
             type="number"
             fullWidth
             variant="standard"
             value={minPrix}
-            onChange={(e) => setMinPrix(e.target.value)}
+            onChange={(e) => {
+              setMinPrix(e.target.value);
+            }}
           />
           <TextField
             autoFocus
             margin="dense"
-            id="name"
             label="Max Prix"
             type="number"
             fullWidth
@@ -153,7 +157,6 @@ export default function AnonceFilter({
           <TextField
             autoFocus
             margin="dense"
-            id="name"
             label="Chambres"
             type="number"
             fullWidth
@@ -167,7 +170,6 @@ export default function AnonceFilter({
           <TextField
             autoFocus
             margin="dense"
-            id="name"
             label="Salles de bain"
             type="number"
             fullWidth
@@ -179,14 +181,17 @@ export default function AnonceFilter({
             Region
           </DialogTitle>
           <Autocomplete
-            disablePortal
-            options={villes.map((ville) => ville[0])}
-            sx={{ width: 300 }}
-            renderInput={() => (
+            options={regions}
+            freeSolo
+            inputValue={region}
+            onInputChange={(event, newInputValue) => {
+              setRegion(newInputValue);
+            }}
+            renderInput={(params) => (
               <TextField
+                {...params}
                 autoFocus
                 margin="dense"
-                id="name"
                 label="Region"
                 type="text"
                 fullWidth
@@ -199,16 +204,28 @@ export default function AnonceFilter({
           <DialogTitle sx={{ padding: 0, paddingTop: "20px", marginBottom: 0 }}>
             Ville
           </DialogTitle>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Ville"
-            type="text"
-            fullWidth
-            variant="standard"
-            value={ville}
-            onChange={(e) => setVille(e.target.value)}
+          <Autocomplete
+            options={villes}
+            freeSolo
+            inputValue={ville}
+            onInputChange={(event, newInputValue) => {
+              setVille(newInputValue);
+            }}
+            renderInput={(params) => {
+              return (
+                <TextField
+                  {...params}
+                  autoFocus
+                  margin="dense"
+                  label="Ville"
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  value={ville}
+                  onChange={(e) => setVille(e.target.value)}
+                />
+              );
+            }}
           />
           <DialogTitle
             sx={{ padding: 0, paddingTop: "20px", marginBottom: "0px" }}
@@ -249,7 +266,7 @@ export default function AnonceFilter({
         <DialogActions sx={{ paddingTop: "40px" }}>
           <Button
             onClick={handleCloseCancel}
-            variant="contained"
+            variant="outlined"
             color="error"
             size="small"
           >
@@ -257,7 +274,7 @@ export default function AnonceFilter({
           </Button>
           <Button
             onClick={handleCloseFilter}
-            variant="contained"
+            variant="outlined"
             color="primary"
             size="small"
           >

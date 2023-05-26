@@ -1,9 +1,30 @@
 import L from "leaflet";
 import React from "react";
+import { Dialog } from "@mui/material";
+import { Slide } from "@mui/material";
+import DialogContent from "@mui/material/DialogContent";
+import AnonceMap from "./AnonceMap";
 
-const Carte = ({ anonces, setisList, setIdAnonce }) => {
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
+const Carte = ({ idChosen, setIdAnonce, anonces }) => {
   const map_div = React.useRef(null);
   const map = React.useRef(null);
+
+  const [open, setOpen] = React.useState(idChosen != null);
+  const [Current_Anonce, setCurrent_Anonce] = React.useState();
+
+  const handleClickOpen = (id) => {
+    setIdAnonce(id);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setIdAnonce(null);
+    setOpen(false);
+  };
 
   const [coordonnées, set_coordonnées] = React.useState({
     lat: 33.57094853077502,
@@ -27,18 +48,21 @@ const Carte = ({ anonces, setisList, setIdAnonce }) => {
         attribution:
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }).addTo(map.current);
-      L.marker({ lat: 33.57094853077502, lng: -7.604995965957642 })
-        .on("click", (e) => {
-          map.current.setView(e.latlng);
-          set_coordonnées(e.latlng);
-          console.log(`feature clicked at : ${e.latlng} `);
-        })
-        .addTo(map.current);
+      let marker = L.marker({
+        lat: 33.57094853077502,
+        lng: -7.604995965957642,
+      }).on("click", (e) => {
+        map.current.setView(e.latlng);
+        handleClickOpen(e.target.id);
+        set_coordonnées(e.latlng);
+      });
+      marker.id = "36";
+      marker.addTo(map.current);
       L.marker({ lat: 40.57094853077502, lng: -7.604995965957642 })
         .on("click", (e) => {
+          handleClickOpen();
           map.current.setView(e.latlng);
           set_coordonnées(e.latlng);
-          console.log(`feature clicked at : ${e.latlng} `);
         })
         .addTo(map.current);
     } catch (error) {
@@ -54,6 +78,23 @@ const Carte = ({ anonces, setisList, setIdAnonce }) => {
   return (
     <>
       <div id="map" ref={map_div}></div>
+      <Dialog
+        scroll="body"
+        open={open}
+        TransitionComponent={Transition}
+        onClose={handleClose}
+      >
+        <DialogContent>
+          <AnonceMap
+            idAnonce={idChosen}
+            Nom=""
+            prix=""
+            latitude=""
+            longitude=""
+            nbreEtoiles=""
+          />
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
