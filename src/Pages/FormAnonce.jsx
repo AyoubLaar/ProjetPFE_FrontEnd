@@ -58,6 +58,7 @@ const Form = () => {
     nomAnonce: "",
     description: "",
     dateCreationAnonce: null,
+    imageUrl: "",
   });
   const [formErrors, setFormErrors] = useState({});
 
@@ -349,13 +350,14 @@ const Form = () => {
                       Select an image:
                     </label>
                     <input
-                      type="file"
+                      type="text"
                       id="image"
                       name="imageUrl"
                       multiple
                       accept="image/jpeg,image/png, image/jpg"
                       className=""
-                      onChange={handleFileChange}
+                      onChange={handleInputChange}
+                      value={formData.imageUrl}
                     />
                   </div>
                 </div>
