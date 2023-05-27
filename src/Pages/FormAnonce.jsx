@@ -48,7 +48,7 @@ const Form = () => {
     type: "",
     // proprieterType: "",
     latitude: 0,
-    longtitude: 0,
+    longitude: 0,
     prix: 0,
     surface: 0,
     nbreChambres: 0,
@@ -57,7 +57,7 @@ const Form = () => {
     etat: "A",
     nomAnonce: "",
     description: "",
-    submissionDatetime: null,
+    dateCreationAnonce: null,
   });
   const [formErrors, setFormErrors] = useState({});
 
@@ -83,8 +83,8 @@ const Form = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     formData.latitude = markerPosition.lat;
-    formData.longtitude = markerPosition.lng;
-    formData.submissionDatetime = new Date();
+    formData.longitude = markerPosition.lng;
+    formData.dateCreationAnonce = new Date();
     console.log(formData);
     if (validateForm()) {
       setSubmitting(true);
