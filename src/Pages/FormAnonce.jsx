@@ -54,7 +54,7 @@ const Form = () => {
     nbreChambres: 0,
     nbreSalleBain: 0,
     nbreEtages: 0,
-    etat: 0,
+    etat: "A",
   });
   const [formErrors, setFormErrors] = useState({});
 
@@ -82,18 +82,7 @@ const Form = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
-    // console.log(Json.stringiformData);
     if (validateForm()) {
-      //   try {
-      //     const response = await axios.post(
-      //       "http://localhost:8080/Anonce",
-      //       formData
-      //     );
-      //     console.log(response.data); // Handle the response as needed
-      //     }
-      //   catch (error) {
-      //     console.error(error);
-      //   }
       axios
         .post("http://localhost:8080/Anonce", formData)
         .then((response) => {
@@ -114,32 +103,24 @@ const Form = () => {
         errors.type = "Anonce Type is required";
         isValid = false;
       }
-      // if (!formData.proprieterType) {
-      //   errors.proprieterType = "proprieter Type is required";
-      //   isValid = false;
-      // }
-    } else if (currentStep === 2) {
-      if (!formData.prix.trim() === "" && parseFloat(formData.prix) <= 0) {
-        errors.prix = "prix is required";
+      if (formData.prix < 0) {
+        errors.prix = "Prix must be a positive number";
         isValid = false;
       }
-      if (
-        !formData.surface.trim() === "" &&
-        parseFloat(formData.surface) <= 0
-      ) {
-        errors.surface = "surface is required";
+      if (formData.surface < 0) {
+        errors.surface = "surface must be a positive number";
         isValid = false;
       }
-      if (!formData.nbreChambres.trim() === "") {
-        errors.nbreChambres = "number chambre is required";
+      if (formData.nbreChambres < 0) {
+        errors.nbreChambres = "Number of bedrooms must be a positive number";
         isValid = false;
       }
-      if (!formData.nbreSalleBain.trim() === "") {
-        errors.nbreSalleBain = "number salle de bien is required";
+      if (formData.nbreSalleBain < 0) {
+        errors.nbreSalleBain = "Number of bathrooms must be a positive number";
         isValid = false;
       }
-      if (!formData.nbreEtages.trim() === "") {
-        errors.nbreEtages = "Numero etage salle de bien is required";
+      if (formData.nbreEtages < 0) {
+        errors.nbreEtages = "Number floors must be a positive number";
         isValid = false;
       }
     }
@@ -154,44 +135,7 @@ const Form = () => {
         <form onSubmit={handleSubmit}>
           {currentStep === 1 && (
             <div>
-              <h2>Step 1: Personal Information</h2>
-              <div className="form-group">
-                <select
-                  name="type"
-                  value={formData.type}
-                  className=""
-                  onChange={handleInputChange}
-                >
-                  <option value="">Select</option>
-                  <option value="l">louer</option>
-                  <option value="V">Vente</option>
-                </select>
-                {formErrors.type && (
-                  <span className="error">{formErrors.type}</span>
-                )}
-              </div>
-              <div className="form-group">
-                {/* <select
-                  name="proprieterType"
-                  value={formData.proprieterType}
-                  className=""
-                  onChange={handleInputChange}
-                >
-                  <option value="">Select</option>
-                  <option value="a">appartement</option>
-                  <option value="m">maison</option>
-                  <option value="v">villa</option>
-                  <option value="r">riad</option>
-                </select> */}
-                {formErrors.proprieterType && (
-                  <span className="error">{formErrors.proprieterType}</span>
-                )}
-              </div>
-            </div>
-          )}
-          {currentStep === 2 && (
-            <div>
-              <h2>Step 2: Details Information</h2>
+              <h2>Step 1:Proprieter Information</h2>
               <div className="form-detail">
                 <div className="form-group">
                   <span>prix</span>
@@ -263,24 +207,27 @@ const Form = () => {
                   )}
                 </div>
                 <div className="form-group">
-                  <span>etat proprietaire</span>
-                  <input
-                    type="text"
-                    name="etat"
-                    placeholder="etat proprietaire "
-                    value={formData.etat}
+                  <span>type</span>
+                  <select
+                    name="type"
+                    value={formData.type}
+                    className=""
                     onChange={handleInputChange}
-                  />
-                  {formErrors.etat && (
-                    <span className="error">{formErrors.etat}</span>
+                  >
+                    <option value="">Select</option>
+                    <option value="l">louer</option>
+                    <option value="V">Vente</option>
+                  </select>
+                  {formErrors.type && (
+                    <span className="error">{formErrors.type}</span>
                   )}
                 </div>
               </div>
             </div>
           )}
-          {currentStep === 3 && (
+          {currentStep === 2 && (
             <div>
-              <h2>Step 3: maps</h2>
+              <h2>Step 2: maps</h2>
               <div className="maps">
                 <MapContainer
                   center={center_position}
@@ -306,34 +253,38 @@ const Form = () => {
                     </Popup>
                   </Marker>
                 </MapContainer>
-                <div>
-                  <div>
+
+                {/* <div>
                     <select id="region" name="region" className="region">
                       <option value="option1-1">Option 1-1</option>
                       <option value="option1-2">Option 1-2</option>
                       <option value="option1-3">Option 1-3</option>
                     </select>
-                  </div>
-                  <div>
+                  </div> */}
+                {/* <div>
                     <select id="optvilleion1" name="ville" className="ville">
                       <option value="option1-1">Option 1-1</option>
                       <option value="option1-2">Option 1-2</option>
                       <option value="option1-3">Option 1-3</option>
                     </select>
-                  </div>
-                  <input
+                  </div> */}
+                {/* <input
                     type="text"
                     placeholder="adresse"
                     className="adresse"
-                  />
-                </div>
+                  /> */}
               </div>
             </div>
           )}
-          {currentStep === 4 && (
+          {currentStep === 3 && (
             <div>
-              <h2>Step 4: title</h2>
-              <input type="text" placeholder="adresse" className="adresse" />
+              <h2>Step 3: title</h2>
+              <input
+                type="text"
+                placeholder="nomAnonce"
+                name="nomAnonce"
+                className="adresse"
+              />
               <textarea
                 name="dexcription"
                 id=""
@@ -343,10 +294,10 @@ const Form = () => {
               ></textarea>
             </div>
           )}
-          {currentStep === 5 && (
+          {currentStep === 4 && (
             <div>
-              <h2>Step 5: images</h2>
-              {currentStep === 5 && (
+              <h2>Step 4: images</h2>
+              {currentStep === 4 && (
                 <div>
                   <div className="">
                     <label htmlFor="image" className="">
@@ -355,7 +306,7 @@ const Form = () => {
                     <input
                       type="file"
                       id="image"
-                      name="image"
+                      name="imageUrl"
                       multiple
                       accept="image/jpeg,image/png, image/jpg"
                       className=""
@@ -366,9 +317,9 @@ const Form = () => {
               )}
             </div>
           )}
-          {currentStep === 6 && (
+          {currentStep === 5 && (
             <div>
-              <h2>Step 6: Confirmation</h2>
+              <h2>Step 5: Confirmation</h2>
               <p>AnonceType: {formData.AnonceType}</p>
               <p>proprieterType: {formData.proprieterType}</p>
               <p>prix: {formData.prix}</p>
@@ -388,7 +339,7 @@ const Form = () => {
                 Previous
               </button>
             )}
-            {currentStep < 6 ? (
+            {currentStep < 5 ? (
               <button
                 type="button"
                 className="next-button "
