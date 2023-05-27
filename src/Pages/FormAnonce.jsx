@@ -58,11 +58,6 @@ const Form = () => {
   });
   const [formErrors, setFormErrors] = useState({});
 
-  // const handleInputChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData({ ...formData, [name]: value });
-  // };
-
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -79,17 +74,46 @@ const Form = () => {
     setFormErrors({});
   };
 
+  const [submitting, setSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    formData.latitude = markerPosition.lat;
+    formData.longtitude = markerPosition.lng;
     console.log(formData);
     if (validateForm()) {
+      setSubmitting(true);
       axios
         .post("http://localhost:8080/Anonce", formData)
         .then((response) => {
           console.log(response.data); // Handle success response
+          setSuccessMessage("Form submitted successfully!"); // Set the success message
+          setFormData({
+            // Reset the form data
+            type: "",
+            latitude: 0,
+            longitude: 0,
+            prix: 0,
+            surface: 0,
+            nbreChambres: 0,
+            nbreSalleBain: 0,
+            nbreEtages: 0,
+            etat: "A",
+          });
+          setMarkerPosition({
+            // Reset the marker position
+            lat: 33.66492,
+            lng: -7.817975,
+          });
         })
         .catch((err) => {
           console.log(err); // Handle error response
+          setSuccessMessage("Error submitting the form.");
+        })
+        .finally(() => {
+          setSubmitting(false); // Set submitting status back to false
         });
     }
   };
@@ -320,13 +344,15 @@ const Form = () => {
           {currentStep === 5 && (
             <div>
               <h2>Step 5: Confirmation</h2>
-              <p>AnonceType: {formData.AnonceType}</p>
+              {/* <p>AnonceType: {formData.AnonceType}</p>
               <p>proprieterType: {formData.proprieterType}</p>
               <p>prix: {formData.prix}</p>
               <p>surface: {formData.surface}</p>
               <p>nbreChambres: {formData.nbreChambres}</p>
               <p>nbreSalleBain: {formData.nbreSalleBain}</p>
-              <p>nbreSalleBain: [markerPosition.lat, markerPosition.lng]</p>
+              <p>lat: {formData.latitude}</p>
+              <p>long: {formData.longtitude}</p> */}
+              {successMessage && <p>{successMessage}</p>}
             </div>
           )}
           <div className="button-group">
