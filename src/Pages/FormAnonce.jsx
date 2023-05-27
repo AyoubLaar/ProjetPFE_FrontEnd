@@ -55,6 +55,9 @@ const Form = () => {
     nbreSalleBain: 0,
     nbreEtages: 0,
     etat: "A",
+    nomAnonce: "",
+    description: "",
+    submissionDatetime: null,
   });
   const [formErrors, setFormErrors] = useState({});
 
@@ -79,9 +82,9 @@ const Form = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     formData.latitude = markerPosition.lat;
     formData.longtitude = markerPosition.lng;
+    formData.submissionDatetime = new Date();
     console.log(formData);
     if (validateForm()) {
       setSubmitting(true);
@@ -123,7 +126,7 @@ const Form = () => {
     let isValid = true;
 
     if (currentStep === 1) {
-      if (!formData.type) {
+      if (formData.type === "") {
         errors.type = "Anonce Type is required";
         isValid = false;
       }
@@ -148,7 +151,16 @@ const Form = () => {
         isValid = false;
       }
     }
-
+    if (currentStep === 3) {
+      if (formData.nomAnonce === "") {
+        errors.nomAnonce = "Anonce name is required";
+        isValid = false;
+      }
+      if (formData.description === "") {
+        errors.description = "Anonce description is required";
+        isValid = false;
+      }
+    }
     setFormErrors(errors);
     return isValid;
   };
@@ -307,15 +319,24 @@ const Form = () => {
                 type="text"
                 placeholder="nomAnonce"
                 name="nomAnonce"
-                className="adresse"
+                className="nomAnonce"
+                value={formData.nomAnonce}
+                onChange={handleInputChange}
               />
+              {formErrors.nomAnonce && (
+                <span className="error">{formErrors.nomAnonce}</span>
+              )}
               <textarea
-                name="dexcription"
-                id=""
-                placeholder="dexcription"
+                name="description"
+                placeholder="description"
                 cols="20"
                 rows="6"
+                value={formData.description}
+                onChange={handleInputChange}
               ></textarea>
+              {formErrors.description && (
+                <span className="error">{formErrors.description}</span>
+              )}
             </div>
           )}
           {currentStep === 4 && (
