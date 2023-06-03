@@ -11,40 +11,66 @@ import FmdGoodRoundedIcon from "@mui/icons-material/FmdGoodRounded";
 import Toolbar from "@mui/material/Toolbar";
 import ListIcon from "@mui/icons-material/List";
 import { Autocomplete } from "@mui/material";
-import villesRegions from "../Data/villes.json";
 
-export default function AnonceFilter({
-  Searchfilter,
-  setSearchfilter,
-  setisList,
-  isList,
-}) {
-  const [Categories, setCategories] = React.useState(Searchfilter.Categories);
-  const villes = villesRegions.map((villeRegion) => villeRegion[0]);
-  const regions = Array.from(
-    new Set(villesRegions.map((villeRegion) => villeRegion[1]))
-  );
+export default function AnonceFilter({ setisList, isList, setAnonces }) {
+  const villes = React.useRef(null);
+  //filter values
+  const [categories, setCategories] = React.useState(null);
+  const [minPrix, setMinPrix] = React.useState(0);
+  const [maxPrix, setMaxPrix] = React.useState(0);
+  const [chambres, setChambres] = React.useState(0);
+  const [salles, setSalles] = React.useState(0);
+  const [ville, setVille] = React.useState("");
+  //Form values
+  const [form_categories, setForm_Categories] = React.useState([]);
+  const [form_minPrix, setForm_MinPrix] = React.useState(0);
+  const [form_maxPrix, setForm_MaxPrix] = React.useState(0);
+  const [form_chambres, setForm_Chambres] = React.useState(0);
+  const [form_salles, setForm_Salles] = React.useState(0);
+  const [form_ville, setForm_Ville] = React.useState("");
+  //Dialogue state
+  const [open, setOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    if (categories == null) {
+      fetch("http://localhost:8080/api/Search/categories")
+        .then((res) => res.json())
+        .then((data) => {
+          const newData = data.map((ville) => {
+            return { id: ville, state: false };
+          });
+          console.log(
+            "data 0 : " +
+              newData[0].id +
+              " " +
+              newData[0].state +
+              " data 1 " +
+              newData[1]
+          );
+          setCategories(newData);
+        });
+    }
+
+    if (villes.current == null) {
+      fetch("http://localhost:8080/api/Search/villes")
+        .then((res) => res.json())
+        .then((data) => (villes.current = data));
+    }
+  }, []);
+
+  React.useEffect(() => {
+    setForm_Categories(categories);
+  }, [categories]);
 
   const setCategorie = (id) => {
-    setCategories(
-      Categories.map((Categorie) =>
+    setForm_Categories(
+      form_categories.map((Categorie) =>
         Categorie.id == id
           ? { id: Categorie.id, state: !Categorie.state }
           : Categorie
       )
     );
   };
-  const init = () => {
-    setCategories(Searchfilter.Categories);
-    setMinPrix(Searchfilter.minPrix);
-    setMaxPrix(Searchfilter.maxPrix);
-    setChambres(Searchfilter.chambres);
-    setSalles(Searchfilter.salles);
-    setVille(Searchfilter.ville);
-    setRegion(Searchfilter.region);
-  };
-
-  const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -52,6 +78,15 @@ export default function AnonceFilter({
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const init = () => {
+    setForm_Categories(categories);
+    setForm_MinPrix(minPrix);
+    setForm_MaxPrix(maxPrix);
+    setForm_Chambres(chambres);
+    setForm_Salles(salles);
+    setForm_Ville(ville);
   };
 
   const handleCloseCancel = () => {
@@ -62,24 +97,31 @@ export default function AnonceFilter({
   const handleCloseFilter = () => {
     setOpen(false);
     handleClose();
-    setSearchfilter({
-      minPrix: minPrix,
-      maxPrix: maxPrix,
-      chambres: chambres,
-      salles: salles,
-      Categories: Categories,
-      region: region,
-      ville: ville,
-    });
-    console.log("filter set !");
+    setCategories(form_categories);
+    setMinPrix(form_minPrix);
+    setMaxPrix(form_maxPrix);
+    setChambres(form_chambres);
+    setSalles(form_salles);
+    setVille(form_ville);
+    const categoriesArray = categories.map((categorie) => categorie.id);
+    fetch("http://localhost:8080/api/Search/filter", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        minPrix: minPrix,
+        maxPrix: maxPrix,
+        chambres: chambres,
+        salles: salles,
+        categories: categoriesArray,
+        ville: ville,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => setAnonces(data));
   };
-
-  const [minPrix, setMinPrix] = React.useState(Searchfilter.minPrix);
-  const [maxPrix, setMaxPrix] = React.useState(Searchfilter.maxPrix);
-  const [chambres, setChambres] = React.useState(Searchfilter.chambres);
-  const [salles, setSalles] = React.useState(Searchfilter.salles);
-  const [ville, setVille] = React.useState(Searchfilter.ville);
-  const [region, setRegion] = React.useState(Searchfilter.region);
 
   return (
     <>
@@ -121,7 +163,7 @@ export default function AnonceFilter({
           {isList ? "Map" : "List"}
         </Button>
       </Toolbar>
-      <Dialog open={open} onClose={handleClose} scroll="body">
+      <Dialog open={open} onClose={handleCloseCancel} scroll="body">
         <DialogContent>
           <DialogTitle sx={{ padding: 0, paddingTop: "0", marginBottom: 0 }}>
             Prix
@@ -133,9 +175,9 @@ export default function AnonceFilter({
             type="number"
             fullWidth
             variant="standard"
-            value={minPrix}
+            value={form_minPrix}
             onChange={(e) => {
-              setMinPrix(e.target.value);
+              setForm_MinPrix(e.target.value);
             }}
           />
           <TextField
@@ -145,10 +187,10 @@ export default function AnonceFilter({
             type="number"
             fullWidth
             variant="standard"
-            value={maxPrix}
-            onChange={(e) => setMaxPrix(e.target.value)}
+            value={form_maxPrix}
+            onChange={(e) => setForm_MaxPrix(e.target.value)}
             onBlur={() => {
-              if (maxPrix < minPrix) setMaxPrix(parseInt(minPrix) + 1);
+              if (maxPrix < minPrix) setForm_MaxPrix(parseInt(minPrix) + 1);
             }}
           />
           <DialogTitle sx={{ padding: 0, paddingTop: "20px", marginBottom: 0 }}>
@@ -161,8 +203,8 @@ export default function AnonceFilter({
             type="number"
             fullWidth
             variant="standard"
-            value={chambres}
-            onChange={(e) => setChambres(e.target.value)}
+            value={form_chambres}
+            onChange={(e) => setForm_Chambres(e.target.value)}
           />
           <DialogTitle sx={{ padding: 0, paddingTop: "20px", marginBottom: 0 }}>
             Salles de bain
@@ -174,42 +216,18 @@ export default function AnonceFilter({
             type="number"
             fullWidth
             variant="standard"
-            value={salles}
-            onChange={(e) => setSalles(e.target.value)}
-          />
-          <DialogTitle sx={{ padding: 0, paddingTop: "20px", marginBottom: 0 }}>
-            Region
-          </DialogTitle>
-          <Autocomplete
-            options={regions}
-            freeSolo
-            inputValue={region}
-            onInputChange={(event, newInputValue) => {
-              setRegion(newInputValue);
-            }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                autoFocus
-                margin="dense"
-                label="Region"
-                type="text"
-                fullWidth
-                variant="standard"
-                value={region}
-                onChange={(e) => setRegion(e.target.value)}
-              />
-            )}
+            value={form_salles}
+            onChange={(e) => setForm_Salles(e.target.value)}
           />
           <DialogTitle sx={{ padding: 0, paddingTop: "20px", marginBottom: 0 }}>
             Ville
           </DialogTitle>
           <Autocomplete
-            options={villes}
+            options={villes.current}
             freeSolo
-            inputValue={ville}
+            inputValue={form_ville}
             onInputChange={(event, newInputValue) => {
-              setVille(newInputValue);
+              setForm_Ville(newInputValue);
             }}
             renderInput={(params) => {
               return (
@@ -243,24 +261,28 @@ export default function AnonceFilter({
               flexWrap: "wrap",
             }}
           >
-            {Categories.map((categorie) => {
-              return (
-                <Button
-                  key={categorie.id}
-                  size="small"
-                  variant={categorie.state ? "contained" : "outlined"}
-                  color={categorie.state ? "secondary" : "Black"}
-                  sx={{
-                    color: categorie.state ? "white" : "black",
-                    margin: "0 10px 0 0 ",
-                    minWidth: "fit-content",
-                  }}
-                  onClick={() => setCategorie(categorie.id)}
-                >
-                  {categorie.id}
-                </Button>
-              );
-            })}
+            {form_categories != null ? (
+              form_categories.map((categorie) => {
+                return (
+                  <Button
+                    key={categorie.id}
+                    size="small"
+                    variant={categorie.state ? "contained" : "outlined"}
+                    color={categorie.state ? "secondary" : "Black"}
+                    sx={{
+                      color: categorie.state ? "white" : "black",
+                      margin: "0 10px 0 0 ",
+                      minWidth: "fit-content",
+                    }}
+                    onClick={() => setCategorie(categorie.id)}
+                  >
+                    {categorie.id}
+                  </Button>
+                );
+              })
+            ) : (
+              <></>
+            )}
           </Box>
         </DialogContent>
         <DialogActions sx={{ paddingTop: "40px" }}>

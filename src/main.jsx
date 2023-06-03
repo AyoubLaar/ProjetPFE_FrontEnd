@@ -9,6 +9,10 @@ import Search from "./Pages/Search.jsx";
 import Anonce from "./Pages/Anonce.jsx";
 import ErrorPage from "./Pages/error-page.jsx";
 import Publier from "./Pages/Publier";
+import Session from "./components/Session";
+import Reserver from "./Pages/Reserver";
+import Login from "./Pages/login";
+import RequireAuthentication from "./components/RequireAuthentication";
 
 const router = createBrowserRouter([
   {
@@ -17,12 +21,12 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "/SignIn",
-    element: <h1>Sign In</h1>,
+    path: "/login",
+    element: <Login />,
   },
   {
     path: "/Publier",
-    element: <Publier />,
+    element: <RequireAuthentication children={<Publier />} />,
   },
   {
     path: "/Anonce/:id",
@@ -31,14 +35,19 @@ const router = createBrowserRouter([
   {
     path: "/Search/:id",
     element: <Search />,
-    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/Reserver/:id",
+    element: <RequireAuthentication children={<Reserver />} />,
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ThemeProvider theme={Theme}>
-      <RouterProvider router={router} />
+      <Session>
+        <RouterProvider router={router} />
+      </Session>
     </ThemeProvider>
   </React.StrictMode>
 );

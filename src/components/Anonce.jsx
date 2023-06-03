@@ -1,50 +1,16 @@
 import React from "react";
-import { Paper, Button, Typography, Stack } from "@mui/material";
-import { useContext } from "react";
-import { Context } from "../context/SearchContext";
+import { CardMedia, Button, Typography, Stack } from "@mui/material";
 import FmdGoodRoundedIcon from "@mui/icons-material/FmdGoodRounded";
 
-export default function Anonce({
-  idAnonce,
-  Nom,
-  prix,
-  latitude,
-  longitude,
-  nbreEtoiles,
-}) {
-  // 0 setAnonceId , 1 setisList
-
-  const context_functions = useContext(Context);
-  const [Data, setData] = React.useState({
-    Nom: Nom || "",
-    prix: prix || "",
-    latitude: latitude || "",
-    longitude: longitude || "",
-    nbreEtoiles: nbreEtoiles || "",
-  });
-  React.useEffect(() => {
-    //Not needed , temporary
-    setData({
-      Nom: "Serene Haven",
-      nbreEtoiles: "5",
-      prix: "100",
-      latitude: "33.57094853077502",
-      longitude: "-7.604995965957642",
-      ville: "Casblanca",
-      region: "Great Casablanca",
-    });
-  }, []);
+export default function Anonce({ anonce }) {
   return (
     <Stack>
-      <Paper
-        variant="elevation"
-        elevation={3}
+      <CardMedia
+        image={anonce.imageUrl}
         sx={{
           position: "relative",
           width: "300px",
           height: "400px",
-          backgroundImage:
-            "url(https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&w=350&dpr=2)",
         }}
       >
         <Button
@@ -62,12 +28,12 @@ export default function Anonce({
             },
           }}
           startIcon={<FmdGoodRoundedIcon color="error" />}
-          href={"/Search/" + idAnonce}
+          href={"/Search/" + anonce.idAnonce}
         >
           Map
         </Button>
         <a
-          href={`/Anonce/${idAnonce}`}
+          href={`/Anonce/${anonce.idAnonce}`}
           style={{
             width: "100%",
             height: "100%",
@@ -90,13 +56,13 @@ export default function Anonce({
               overflow="hidden"
               textOverflow="ellipsis"
             >
-              {Data.Nom}
+              {anonce.nomAnonce}
             </Typography>
             <Typography variant="body1" fontWeight={500}>
-              {Data.nbreEtoiles}/5 stars
+              {anonce.nbreEtoiles}/5 stars
             </Typography>
             <Typography variant="body1" fontWeight={500}>
-              prix : {Data.prix} dh
+              prix : {anonce.prix} dh
             </Typography>
             <Typography
               variant="body1"
@@ -104,11 +70,11 @@ export default function Anonce({
               overflow="hidden"
               textOverflow="ellipsis"
             >
-              {Data.ville + " , " + Data.region}
+              {anonce.idVille + " , " + anonce.idRegion}
             </Typography>
           </Stack>
         </a>
-      </Paper>
+      </CardMedia>
     </Stack>
   );
 }

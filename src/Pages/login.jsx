@@ -1,11 +1,11 @@
 import Header from "../components/Header";
 
-const Reserver = () => {
+const Login = () => {
   return (
     <>
-      <Header></Header>
+      <Header />
     </>
   );
 };
 
-export default Reserver;
+export default Login;

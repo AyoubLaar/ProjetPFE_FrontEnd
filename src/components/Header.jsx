@@ -10,13 +10,15 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
-import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import VpnKeyOutlinedIcon from "@mui/icons-material/VpnKeyOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import { userContext } from "../context/UserContext";
 
 const Header = () => {
+  const user = React.useContext(userContext);
   const pages = [
     { innerHTML: "Search", icon: <SearchIcon />, href: "/" },
     {
@@ -24,7 +26,16 @@ const Header = () => {
       icon: <AddCircleOutlineOutlinedIcon />,
       href: "/Publier",
     },
-    { innerHTML: "Sign in", icon: <VpnKeyOutlinedIcon />, href: "/SignIn" },
+    {
+      innerHTML: user.user == null ? "Sign in" : "compte",
+      icon:
+        user.user == null ? (
+          <VpnKeyOutlinedIcon />
+        ) : (
+          <AccountCircleOutlinedIcon />
+        ),
+      href: "/SignIn",
+    },
   ];
 
   const [mobileOpen, setMobileOpen] = React.useState(false);

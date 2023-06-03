@@ -121,7 +121,7 @@ const Anonce = () => {
               <Typography variant="body1">
                 {"Location : " + Data.ville + " , " + Data.region}
               </Typography>
-              <Typography variant="body1">{Data.nbrEtoiles}/5 stars</Typography>
+              <Typography variant="body1">{Data.nbrEtoiles} stars</Typography>
               <Typography variant="body1">prix : {Data.prix} dh</Typography>
               <Typography variant="body1">
                 surface : {Data.surface} m2
