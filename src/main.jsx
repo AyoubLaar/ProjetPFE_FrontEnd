@@ -13,6 +13,7 @@ import Session from "./components/Session";
 import Reserver from "./Pages/Reserver";
 import Login from "./Pages/login";
 import RequireAuthentication from "./components/RequireAuthentication";
+import AdminPage from "./Pages/AdminPage";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
   {
     path: "/Reserver/:id",
     element: <RequireAuthentication children={<Reserver />} />,
+  },
+  {
+    path: "/admin",
+    element: <AdminPage />,
   },
 ]);
 
