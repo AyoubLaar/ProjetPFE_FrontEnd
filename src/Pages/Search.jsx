@@ -1,6 +1,5 @@
 import Header from "../components/Header";
 import AnonceFilter from "../components/AnonceFilter";
-import Data_Categories from "../Data/Categories.json";
 import React from "react";
 import Box from "@mui/material/Box";
 import Carte from "../components/Carte";

@@ -4,7 +4,7 @@ import { userContext } from "../context/UserContext";
 
 const RequireAuthentication = ({ children }) => {
   const [Authentified, setAuthentified] = React.useState(false);
-  const [jwt] = React.useContext(userContext);
+  const [jwt, setJwt] = React.useContext(userContext);
   const Navigate = useNavigate();
   React.useEffect(() => {
     if (jwt == null) {
@@ -20,6 +20,7 @@ const RequireAuthentication = ({ children }) => {
           if (data) {
             setAuthentified(true);
           } else {
+            setJwt(null);
             Navigate("/login");
           }
         });
