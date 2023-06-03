@@ -22,7 +22,7 @@ export default function AnonceFilter({ setisList, isList, setAnonces }) {
   const [salles, setSalles] = React.useState(0);
   const [ville, setVille] = React.useState("");
   //Form values
-  const [form_categories, setForm_Categories] = React.useState([]);
+  const [form_categories, setForm_Categories] = React.useState(null);
   const [form_minPrix, setForm_MinPrix] = React.useState(0);
   const [form_maxPrix, setForm_MaxPrix] = React.useState(0);
   const [form_chambres, setForm_Chambres] = React.useState(0);
@@ -59,7 +59,7 @@ export default function AnonceFilter({ setisList, isList, setAnonces }) {
   }, []);
 
   React.useEffect(() => {
-    setForm_Categories(categories);
+    if (form_categories == null) setForm_Categories(categories);
   }, [categories]);
 
   const setCategorie = (id) => {
@@ -103,20 +103,25 @@ export default function AnonceFilter({ setisList, isList, setAnonces }) {
     setChambres(form_chambres);
     setSalles(form_salles);
     setVille(form_ville);
-    const categoriesArray = categories.map((categorie) => categorie.id);
+    const categoriesArray = [];
+    form_categories.forEach((element) => {
+      if (element.state) {
+        categoriesArray.push(element.id);
+      }
+    });
+    console.log(categoriesArray);
     fetch("http://localhost:8080/api/Search/filter", {
       method: "POST",
-      mode: "cors",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        minPrix: minPrix,
-        maxPrix: maxPrix,
-        chambres: chambres,
-        salles: salles,
+        minPrix: form_minPrix,
+        maxPrix: form_maxPrix,
+        chambres: form_chambres,
+        salles: form_salles,
         categories: categoriesArray,
-        ville: ville,
+        ville: form_ville,
       }),
     })
       .then((res) => res.json())
