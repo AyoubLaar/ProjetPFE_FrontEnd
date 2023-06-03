@@ -1,0 +1,16 @@
+.sidebar_item {
+  cursor: pointer;
+}
+
+.sidebar_item_active {
+  color: #242222;
+}
+
+.sidebar {
+  background-color: #2b8be9;
+  width: 200px;
+  height: 100vh;
+  padding: 10px;
+  color: white;
+  font-size: 18px;
+}
