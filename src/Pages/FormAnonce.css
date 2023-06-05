@@ -53,7 +53,7 @@ h2 {
   margin-right: 10px;
 }
 
-input[type="text"],
+/* input[type="text"],
 input[type="email"],
 select,
 input[type="number"],
@@ -63,7 +63,7 @@ textarea {
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
-}
+} */
 
 .error {
   color: red;

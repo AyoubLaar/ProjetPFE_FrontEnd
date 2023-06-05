@@ -5,8 +5,14 @@ import MapIcon from "@mui/icons-material/Map";
 import React from "react";
 import ListCommentaire from "../components/ListCommentaires";
 
+/*
+membre
+datePub
+contenu
+*/
+
 const Anonce = () => {
-  const idAnonce = useParams().id;
+  const idAnonce = React.useRef(useParams().id);
   const [Data, setData] = React.useState({
     Nom: "",
     Surface: "",
@@ -19,69 +25,16 @@ const Anonce = () => {
     longitude: "",
     email: "",
     telephone: "",
+    imageUrl: "",
     Commentaires: [],
   });
   React.useEffect(() => {
-    // fetch();
-    setData({
-      Nom: "Serene Haven ",
-      nbrEtoiles: "5",
-      Surface: "400",
-      nbreSalleBain: "3",
-      nbreChambres: "3",
-      nbreEtages: "3",
-      prix: "100",
-      description:
-        "Nestled amidst breathtaking natural surroundings, Serene Haven offers a tranquil retreat for weary travelers seeking solace and rejuvenation. This luxurious boutique hotel blends modern elegance with a touch of rustic charm, creating a captivating ambiance that embraces both comfort and serenity. From the moment you step through its doors, you'll be greeted by warm hospitality and impeccable service, ensuring a memorable stay. Indulge in the opulent rooms and suites adorned with tasteful decor, plush furnishings, and panoramic views that showcase the beauty of the surrounding landscape. Unwind in the spa, where skilled therapists provide blissful treatments to restore your mind, body, and soul. Savor exquisite culinary delights at the hotel's gourmet restaurant, where the expert chefs artfully craft a fusion of international flavors. Whether you're seeking a romantic getaway, a peaceful retreat, or a haven for your next business trip, Serene Haven promises an enchanting experience that will leave you refreshed and inspired ",
-      latitude: "33.57094853077502",
-      longitude: "-7.604995965957642",
-      ville: "Casablanca",
-      region: "Great Casablanca",
-      email: "ayoublaarouchi03@gmail.com",
-      telephone: "0684629206",
-      Commentaires: [
-        {
-          membre: { nom: "Laarouchi", prenom: "Ayoub" },
-          datePub: new Date(),
-          contenu: "hadchi nadi bzaf !",
-        },
-        {
-          membre: { nom: "Laarouchi", prenom: "Ayoub" },
-          datePub: new Date(),
-          contenu: "hadchi nadi bzaf !",
-        },
-        {
-          membre: { nom: "Laarouchi", prenom: "Ayoub" },
-          datePub: new Date(),
-          contenu: "hadchi nadi bzaf !",
-        },
-        {
-          membre: { nom: "Laarouchi", prenom: "Ayoub" },
-          datePub: new Date(),
-          contenu: "hadchi nadi bzaf !",
-        },
-        {
-          membre: { nom: "Laarouchi", prenom: "Ayoub" },
-          datePub: new Date(),
-          contenu: "hadchi nadi bzaf !",
-        },
-        {
-          membre: { nom: "Laarouchi", prenom: "Ayoub" },
-          datePub: new Date(),
-          contenu: "hadchi nadi bzaf !",
-        },
-        {
-          membre: { nom: "Laarouchi", prenom: "Ayoub" },
-          datePub: new Date(),
-          contenu: "hadchi nadi bzaf !",
-        },
-        {
-          membre: { nom: "Laarouchi", prenom: "Ayoub" },
-          datePub: new Date(),
-          contenu: "hadchi nadi bzaf !",
-        },
-      ],
-    });
+    fetch("http://localhost:8080/api/Search/Anonce?id=" + idAnonce.current)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setData(data);
+      });
   }, []);
   return (
     <>
@@ -99,7 +52,7 @@ const Anonce = () => {
             }}
           >
             <CardMedia
-              image="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&w=350&dpr=2"
+              image={Data.imageUrl}
               sx={{
                 height: "400px",
                 minWidth: {
@@ -124,7 +77,7 @@ const Anonce = () => {
               <Typography variant="body1">{Data.nbrEtoiles} stars</Typography>
               <Typography variant="body1">prix : {Data.prix} dh</Typography>
               <Typography variant="body1">
-                surface : {Data.surface} m2
+                surface : {Data.Surface} m2
               </Typography>
               <Typography variant="body1">
                 Nombre Etages : {Data.nbreEtages}{" "}
@@ -135,7 +88,7 @@ const Anonce = () => {
               <Typography variant="body1">
                 Nombre Salles de bain : {Data.nbreSalleBain}{" "}
               </Typography>
-              <a href={"/Search/" + idAnonce}>
+              <a href={"/Search/" + idAnonce.current}>
                 <Button
                   startIcon={<MapIcon />}
                   variant="contained"
@@ -172,7 +125,7 @@ const Anonce = () => {
               justifyContent: "flex-end",
             }}
           >
-            <a href={"/Reserver/" + idAnonce}>
+            <a href={"/Reserver/" + idAnonce.curret}>
               <Button variant="contained">Reserver</Button>
             </a>
           </div>

@@ -1,13 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const RequireAuthentication = ({ children }) => {
+const RequireAdminAuthentication = ({ children }) => {
   const jwt = window.localStorage.getItem("ESTATE_HUB_JWT");
   const [Authentified, setAuthentified] = React.useState(null);
   const Navigate = useNavigate();
 
   if (jwt != null && Authentified == null) {
-    fetch("http://localhost:8080/api/Auth/VerifyToken", {
+    fetch("http://localhost:8080/api/Auth/VerifyTokenAdmin", {
       headers: new Headers({
         Authorization: "Bearer " + jwt,
       }),
@@ -40,4 +40,4 @@ const RequireAuthentication = ({ children }) => {
   return Authentified == null ? <></> : Authentified ? children : <></>;
 };
 
-export default RequireAuthentication;
+export default RequireAdminAuthentication;

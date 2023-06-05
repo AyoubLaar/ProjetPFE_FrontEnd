@@ -15,10 +15,12 @@ import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOu
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import { userContext } from "../context/UserContext";
 
 const Header = () => {
-  const user = React.useContext(userContext);
+  const jwt = window.localStorage.getItem("ESTATE_HUB_JWT");
+  React.useEffect(() => {
+    console.log("jwt : " + jwt);
+  }, []);
   const pages = [
     { innerHTML: "Search", icon: <SearchIcon />, href: "/" },
     {
@@ -27,14 +29,10 @@ const Header = () => {
       href: "/Publier",
     },
     {
-      innerHTML: user.user == null ? "Sign in" : "compte",
+      innerHTML: jwt == null ? "Sign in" : "compte",
       icon:
-        user.user == null ? (
-          <VpnKeyOutlinedIcon />
-        ) : (
-          <AccountCircleOutlinedIcon />
-        ),
-      href: "/SignIn",
+        jwt == null ? <VpnKeyOutlinedIcon /> : <AccountCircleOutlinedIcon />,
+      href: jwt == null ? "/Login" : "/compte",
     },
   ];
 

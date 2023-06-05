@@ -9,10 +9,10 @@ import Search from "./Pages/Search.jsx";
 import Anonce from "./Pages/Anonce.jsx";
 import ErrorPage from "./Pages/error-page.jsx";
 import Publier from "./Pages/Publier";
-import Session from "./components/Session";
 import Reserver from "./Pages/Reserver";
 import Login from "./Pages/login";
 import RequireAuthentication from "./components/RequireAuthentication";
+import RequireAdminAuthentication from "./components/RequireAdminAuthentication";
 import AdminPage from "./Pages/AdminPage";
 
 const router = createBrowserRouter([
@@ -22,7 +22,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "/login",
+    path: "/Login",
     element: <Login />,
   },
   {
@@ -42,17 +42,19 @@ const router = createBrowserRouter([
     element: <RequireAuthentication children={<Reserver />} />,
   },
   {
-    path: "/admin",
+    path: "/Admin",
+    element: <RequireAdminAuthentication children={<AdminPage />} />,
+  },
+  {
+    path: "/Signup",
     element: <AdminPage />,
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <ThemeProvider theme={Theme}>
-      <Session>
-        <RouterProvider router={router} />
-      </Session>
-    </ThemeProvider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <ThemeProvider theme={Theme}>
+    <RouterProvider router={router} />
+  </ThemeProvider>
+  // </React.StrictMode>
 );

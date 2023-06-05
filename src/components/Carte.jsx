@@ -44,9 +44,9 @@ const Carte = ({ idChosen, setIdAnonce, anonces }) => {
     try {
       map.current = L.map(map_div.current.id).setView({ lat: 0, lng: 0 }, 1);
       console.log("map is not null");
-      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        noWrap: true,
-      }).addTo(map.current);
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(
+        map.current
+      );
 
       for (let i = 0; i < anonces.length; i++) {
         let marker = L.marker({

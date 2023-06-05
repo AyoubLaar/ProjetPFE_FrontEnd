@@ -7,8 +7,8 @@ import {
   useMapEvents,
 } from "react-leaflet";
 import axios from "axios";
-import "./FormAnonce.css";
-import "leaflet/dist/leaflet.css";
+// import "./FormAnonce.css";
+// import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";

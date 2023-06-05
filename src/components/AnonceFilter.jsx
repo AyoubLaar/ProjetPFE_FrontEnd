@@ -31,6 +31,11 @@ export default function AnonceFilter({ setisList, isList, setAnonces }) {
   //Dialogue state
   const [open, setOpen] = React.useState(false);
 
+  const [Error_minPrix, setError_MinPrix] = React.useState(false);
+  const [Error_maxPrix, setError_MaxPrix] = React.useState(false);
+  const [Error_chambres, setError_Chambres] = React.useState(false);
+  const [Error_salles, setError_Salles] = React.useState(false);
+
   React.useEffect(() => {
     if (categories == null) {
       fetch("http://localhost:8080/api/Search/categories")
@@ -81,6 +86,10 @@ export default function AnonceFilter({ setisList, isList, setAnonces }) {
   };
 
   const init = () => {
+    setError_Chambres(false);
+    setError_MaxPrix(false);
+    setError_MinPrix(false);
+    setError_Salles(false);
     setForm_Categories(categories);
     setForm_MinPrix(minPrix);
     setForm_MaxPrix(maxPrix);
@@ -95,37 +104,43 @@ export default function AnonceFilter({ setisList, isList, setAnonces }) {
   };
 
   const handleCloseFilter = () => {
-    setOpen(false);
     handleClose();
-    setCategories(form_categories);
-    setMinPrix(form_minPrix);
-    setMaxPrix(form_maxPrix);
-    setChambres(form_chambres);
-    setSalles(form_salles);
-    setVille(form_ville);
-    const categoriesArray = [];
-    form_categories.forEach((element) => {
-      if (element.state) {
-        categoriesArray.push(element.id);
-      }
-    });
-    console.log(categoriesArray);
-    fetch("http://localhost:8080/api/Search/filter", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        minPrix: form_minPrix,
-        maxPrix: form_maxPrix,
-        chambres: form_chambres,
-        salles: form_salles,
-        categories: categoriesArray,
-        ville: form_ville,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => setAnonces(data));
+    if (!Error_chambres && !Error_maxPrix && !Error_minPrix && !Error_salles) {
+      setTimeout(() => setOpen(false), 500);
+      setCategories(form_categories);
+      setMinPrix(form_minPrix);
+      setMaxPrix(form_maxPrix);
+      setChambres(form_chambres);
+      setSalles(form_salles);
+      setVille(form_ville);
+      const categoriesArray = [];
+      form_categories.forEach((element) => {
+        if (element.state) {
+          categoriesArray.push(element.id);
+        }
+      });
+      console.log(categoriesArray);
+      fetch("http://localhost:8080/api/Search/filter", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          minPrix: form_minPrix,
+          maxPrix: form_maxPrix,
+          chambres: form_chambres,
+          salles: form_salles,
+          categories: categoriesArray,
+          ville: form_ville,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => setAnonces(data));
+    } else {
+      alert("Erreur dans les champs saisie !");
+      setOpen(false);
+      setTimeout(init, 500);
+    }
   };
 
   return (
@@ -181,8 +196,16 @@ export default function AnonceFilter({ setisList, isList, setAnonces }) {
             fullWidth
             variant="standard"
             value={form_minPrix}
+            error={Error_minPrix}
             onChange={(e) => {
               setForm_MinPrix(e.target.value);
+              if (e.target.value < 0) {
+                setError_MinPrix(true);
+              } else {
+                setError_MinPrix(false);
+              }
+              if (e.target.value >= form_maxPrix)
+                setForm_MaxPrix(parseInt(e.target.value) + 100);
             }}
           />
           <TextField
@@ -193,9 +216,14 @@ export default function AnonceFilter({ setisList, isList, setAnonces }) {
             fullWidth
             variant="standard"
             value={form_maxPrix}
-            onChange={(e) => setForm_MaxPrix(e.target.value)}
-            onBlur={() => {
-              if (maxPrix < minPrix) setForm_MaxPrix(parseInt(minPrix) + 1);
+            error={Error_maxPrix}
+            onChange={(e) => {
+              setForm_MaxPrix(e.target.value);
+              if (e.target.value < 0) {
+                setError_MaxPrix(true);
+              } else {
+                setError_MaxPrix(false);
+              }
             }}
           />
           <DialogTitle sx={{ padding: 0, paddingTop: "20px", marginBottom: 0 }}>
@@ -209,7 +237,15 @@ export default function AnonceFilter({ setisList, isList, setAnonces }) {
             fullWidth
             variant="standard"
             value={form_chambres}
-            onChange={(e) => setForm_Chambres(e.target.value)}
+            error={Error_chambres}
+            onChange={(e) => {
+              setForm_Chambres(e.target.value);
+              if (e.target.value < 0) {
+                setError_Chambres(true);
+              } else {
+                setError_Chambres(false);
+              }
+            }}
           />
           <DialogTitle sx={{ padding: 0, paddingTop: "20px", marginBottom: 0 }}>
             Salles de bain
@@ -221,8 +257,16 @@ export default function AnonceFilter({ setisList, isList, setAnonces }) {
             type="number"
             fullWidth
             variant="standard"
+            error={Error_salles}
             value={form_salles}
-            onChange={(e) => setForm_Salles(e.target.value)}
+            onChange={(e) => {
+              setForm_Salles(e.target.value);
+              if (e.target.value < 0) {
+                setError_Salles(true);
+              } else {
+                setError_Salles(false);
+              }
+            }}
           />
           <DialogTitle sx={{ padding: 0, paddingTop: "20px", marginBottom: 0 }}>
             Ville

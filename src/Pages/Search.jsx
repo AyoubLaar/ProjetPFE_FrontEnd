@@ -5,7 +5,6 @@ import Box from "@mui/material/Box";
 import Carte from "../components/Carte";
 import List from "../components/List";
 import { useParams } from "react-router-dom";
-import { Typography } from "@mui/material";
 
 const Search = () => {
   const [id_anonce_chosen, setIdAnonce] = React.useState(
@@ -47,9 +46,7 @@ const Search = () => {
           <List anonces={Anonces} />
         )
       ) : (
-        <Typography variant="h5" textAlign="center">
-          No data found !
-        </Typography>
+        <></>
       )}
     </>
   );
