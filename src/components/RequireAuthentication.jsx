@@ -6,11 +6,11 @@ const RequireAuthentication = ({ children }) => {
   const [Authentified, setAuthentified] = React.useState(null);
   const Navigate = useNavigate();
 
+  if (jwt == null && Authentified == null) setAuthentified(false);
+
   if (jwt != null && Authentified == null) {
     fetch("http://localhost:8080/api/Auth/VerifyToken", {
-      headers: new Headers({
-        Authorization: "Bearer " + jwt,
-      }),
+      headers: { Authorization: "Bearer " + jwt },
     })
       .then((res) => {
         if (!res.ok) {
@@ -24,12 +24,6 @@ const RequireAuthentication = ({ children }) => {
         setAuthentified(false);
       });
   }
-
-  React.useEffect(() => {
-    if (jwt == null) {
-      Navigate("/login");
-    }
-  }, []);
 
   React.useEffect(() => {
     if (Authentified == false) {

@@ -1,4 +1,4 @@
-import css from "./Sidebar.module.css";
+import css from "../styles/Sidebar.module.css";
 
 const Sidebar = ({ activeItem, onItemClick }) => {
   return (

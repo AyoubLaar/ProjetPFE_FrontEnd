@@ -2,7 +2,7 @@ import Sidebar from "./Sidebar";
 // import Dashboard from "./Dashboard";
 import UserAnonce from "./UserAnonce";
 import { useState } from "react";
-import css from "./AdminPage.module.css";
+import css from "../styles/AdminPage.module.css";
 import Header from "../components/Header";
 // import Utilisateur from "./Utilisateur";
 

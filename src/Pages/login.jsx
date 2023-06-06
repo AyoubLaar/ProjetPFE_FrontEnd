@@ -11,16 +11,21 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const jwt = window.localStorage.getItem("ESTATE_HUB_JWT");
+  const [jwt, setJwt] = React.useState(
+    window.localStorage.getItem("ESTATE_HUB_JWT")
+  );
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [authentified, setAuthentified] = React.useState(null);
   const Navigate = useNavigate();
 
+  React.useEffect(() => {
+    if (authentified == true) Navigate(-1);
+  }, [authentified]);
+
   if (jwt == null && authentified == null) setAuthentified(false);
 
   if (jwt != null && authentified == null) {
-    console.log("LocalStorage jwt");
     const options = {
       method: "GET",
       headers: {
@@ -40,6 +45,7 @@ const Login = () => {
       })
       .catch((e) => {
         setAuthentified(false);
+        setJwt(null);
         console.log("LocalStorage jwt not valide !");
         window.localStorage.removeItem("ESTATE_HUB_JWT");
       });
@@ -68,6 +74,7 @@ const Login = () => {
         .then((data) => {
           window.localStorage.setItem("ESTATE_HUB_JWT", data.token);
           setAuthentified(true);
+          console.log("login successfull !");
         })
         .catch((e) => {
           alert("invalid credentials !");
@@ -76,10 +83,6 @@ const Login = () => {
         });
     }
   };
-
-  React.useEffect(() => {
-    if (authentified == true) Navigate(-1);
-  }, [authentified]);
 
   return authentified == null ? (
     <></>

@@ -14,6 +14,7 @@ import Login from "./Pages/login";
 import RequireAuthentication from "./components/RequireAuthentication";
 import RequireAdminAuthentication from "./components/RequireAdminAuthentication";
 import AdminPage from "./Pages/AdminPage";
+import SignUp from "./Pages/SignUp";
 
 const router = createBrowserRouter([
   {
@@ -47,7 +48,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/Signup",
-    element: <AdminPage />,
+    element: <SignUp />,
   },
 ]);
 

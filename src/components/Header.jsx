@@ -15,12 +15,21 @@ import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOu
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 
 const Header = () => {
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const jwt = window.localStorage.getItem("ESTATE_HUB_JWT");
-  React.useEffect(() => {
-    console.log("jwt : " + jwt);
-  }, []);
   const pages = [
     { innerHTML: "Search", icon: <SearchIcon />, href: "/" },
     {
@@ -28,15 +37,68 @@ const Header = () => {
       icon: <AddCircleOutlineOutlinedIcon />,
       href: "/Publier",
     },
-    {
-      innerHTML: jwt == null ? "Sign in" : "compte",
-      icon:
-        jwt == null ? <VpnKeyOutlinedIcon /> : <AccountCircleOutlinedIcon />,
-      href: jwt == null ? "/Login" : "/compte",
-    },
   ];
 
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const SignInButton = (
+    <Button
+      size="small"
+      variant="outlined"
+      color="primary"
+      href={"/Login"}
+      startIcon={<VpnKeyOutlinedIcon />}
+    >
+      <Typography fontWeight={400}>{"Sign in"}</Typography>
+    </Button>
+  );
+
+  const compteMenuButton = (
+    <div>
+      <Button
+        id="demo-positioned-button"
+        aria-controls={open ? "demo-positioned-menu" : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? "true" : undefined}
+        onClick={handleClick}
+        variant="outlined"
+        size="small"
+        startIcon={<AccountCircleOutlinedIcon />}
+      >
+        <Typography fontWeight={400}>COMPTE</Typography>
+      </Button>
+      <Menu
+        id="demo-positioned-menu"
+        aria-labelledby="demo-positioned-button"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        fullwidth
+      >
+        <MenuItem
+          onClick={() => {
+            window.location.assign("/Profile");
+          }}
+        >
+          Profile
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            window.localStorage.removeItem("ESTATE_HUB_JWT");
+            window.location.assign("/");
+          }}
+        >
+          Logout
+        </MenuItem>
+      </Menu>
+    </div>
+  );
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -117,6 +179,7 @@ const Header = () => {
                 <Typography fontWeight={400}>{page.innerHTML}</Typography>
               </Button>
             ))}
+            {jwt == null ? SignInButton : compteMenuButton}
           </Stack>
           <IconButton
             aria-label="open drawer"
