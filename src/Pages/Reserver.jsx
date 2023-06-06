@@ -28,16 +28,16 @@ const Reserver = () => {
     ) {
       alert("Veuillez remplir tout les champs !");
     } else {
-      console.log(formData);
-      const reservation = {
+      const reservation_dto = {
+        id: id,
         DateReservationArrive: formData.get("DateReservationArrive"),
         DateReservationDepart: formData.get("DateReservationDepart"),
         emailClient: formData.get("emailClient"),
         nbrEnfants: formData.get("nbrEnfants"),
         nbrAdultes: formData.get("nbrAdultes"),
       };
+      console.log(reservation_dto);
       const token = window.localStorage.getItem("ESTATE_HUB_JWT");
-
       const options = {
         method: "POST",
         mode: "cors",
@@ -45,9 +45,9 @@ const Reserver = () => {
           Authorization: "Bearer " + token,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(reservation),
+        body: JSON.stringify(reservation_dto),
       };
-      fetch("http://localhost:8080/api/Membre/Reserver" /*?id=" + id*/, options)
+      fetch("http://localhost:8080/api/Membre/Reserver", options)
         .then((res) => {
           if (!res.ok) {
             throw new Error("HTTP status " + res.status);
