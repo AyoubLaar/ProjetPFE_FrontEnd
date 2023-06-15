@@ -45,7 +45,6 @@ const Form = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     type: "",
-    // proprieterType: "",
     latitude: 0,
     longitude: 0,
     prix: 0,
@@ -53,11 +52,13 @@ const Form = () => {
     nbreChambres: 0,
     nbreSalleBain: 0,
     nbreEtages: 0,
-    etat: "A",
     nomAnonce: "",
     description: "",
     dateCreationAnonce: null,
     imageUrl: "",
+    email: "",
+    telephone: "",
+    enabled: true,
   });
   const [formErrors, setFormErrors] = useState({});
 
@@ -85,11 +86,21 @@ const Form = () => {
     formData.latitude = markerPosition.lat;
     formData.longitude = markerPosition.lng;
     formData.dateCreationAnonce = new Date();
+    const jwt = window.localStorage.getItem("ESTATE_HUB_JWT");
     console.log(formData);
     if (validateForm()) {
       setSubmitting(true);
       axios
-        .post("http://localhost:8080/Anonce", formData)
+        .post(
+          "http://localhost:8080/api/Membre/Publier",
+          formData,
+          // JSON.stringify(formData),
+          {
+            headers: {
+              Authorization: "Bearer " + jwt,
+            },
+          }
+        )
         .then((response) => {
           console.log(response.data); // Handle success response
           setSuccessMessage("Form submitted successfully!"); // Set the success message
@@ -103,7 +114,13 @@ const Form = () => {
             nbreChambres: 0,
             nbreSalleBain: 0,
             nbreEtages: 0,
-            etat: "A",
+            nomAnonce: "",
+            description: "",
+            dateCreationAnonce: null,
+            imageUrl: "",
+            email: "",
+            telephone: "",
+            enabled: true,
           });
           setMarkerPosition({
             // Reset the marker position
@@ -357,6 +374,18 @@ const Form = () => {
                       className=""
                       onChange={handleInputChange}
                       value={formData.imageUrl}
+                    />
+                    <input
+                      type="text"
+                      name="email"
+                      onChange={handleInputChange}
+                      value={formData.email}
+                    />
+                    <input
+                      type="text"
+                      name="telephone"
+                      onChange={handleInputChange}
+                      value={formData.telephone}
                     />
                   </div>
                 </div>
