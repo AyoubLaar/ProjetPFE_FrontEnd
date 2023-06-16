@@ -57,7 +57,7 @@ export default function SignUp() {
             window.location.assign("/");
           })
           .catch((e) => {
-            console.log("invalid credentials !");
+            alert("invalid credentials !");
           });
       }
     }

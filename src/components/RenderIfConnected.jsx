@@ -1,18 +1,13 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 
-const RequireAdminAuthentication = ({ children }) => {
+const RenderIfConnected = ({ children }) => {
   const jwt = window.localStorage.getItem("ESTATE_HUB_JWT");
   const [Authentified, setAuthentified] = React.useState(null);
-  const Navigate = useNavigate();
-
   if (jwt == null && Authentified == null) setAuthentified(false);
 
   if (jwt != null && Authentified == null) {
-    fetch("http://localhost:8080/api/Auth/VerifyTokenAdmin", {
-      headers: new Headers({
-        Authorization: "Bearer " + jwt,
-      }),
+    fetch("http://localhost:8080/api/Auth/VerifyToken", {
+      headers: { Authorization: "Bearer " + jwt },
     })
       .then((res) => {
         if (!res.ok) {
@@ -27,13 +22,7 @@ const RequireAdminAuthentication = ({ children }) => {
       });
   }
 
-  React.useEffect(() => {
-    if (Authentified == false) {
-      Navigate("/login");
-    }
-  }, [Authentified]);
-
   return Authentified == null ? <></> : Authentified ? children : <></>;
 };
 
-export default RequireAdminAuthentication;
+export default RenderIfConnected;

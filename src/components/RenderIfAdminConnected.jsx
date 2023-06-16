@@ -1,10 +1,8 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 
-const RequireAdminAuthentication = ({ children }) => {
+const RenderIfAdminConnected = () => {
   const jwt = window.localStorage.getItem("ESTATE_HUB_JWT");
   const [Authentified, setAuthentified] = React.useState(null);
-  const Navigate = useNavigate();
 
   if (jwt == null && Authentified == null) setAuthentified(false);
 
@@ -26,14 +24,6 @@ const RequireAdminAuthentication = ({ children }) => {
         setAuthentified(false);
       });
   }
-
-  React.useEffect(() => {
-    if (Authentified == false) {
-      Navigate("/login");
-    }
-  }, [Authentified]);
-
-  return Authentified == null ? <></> : Authentified ? children : <></>;
 };
 
-export default RequireAdminAuthentication;
+export default RenderIfAdminConnected;

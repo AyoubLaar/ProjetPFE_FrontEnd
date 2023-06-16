@@ -10,17 +10,23 @@ import Box from "@mui/material/Box";
 import FmdGoodRoundedIcon from "@mui/icons-material/FmdGoodRounded";
 import Toolbar from "@mui/material/Toolbar";
 import ListIcon from "@mui/icons-material/List";
-import { Autocomplete } from "@mui/material";
+import {
+  Autocomplete,
+  RadioGroup,
+  Radio,
+  FormControlLabel,
+} from "@mui/material";
 
 export default function AnonceFilter({ setisList, isList, setAnonces }) {
   const villes = React.useRef(null);
   //filter values
   const [categories, setCategories] = React.useState(null);
   const [minPrix, setMinPrix] = React.useState(0);
-  const [maxPrix, setMaxPrix] = React.useState(0);
+  const [maxPrix, setMaxPrix] = React.useState(9999999);
   const [chambres, setChambres] = React.useState(0);
   const [salles, setSalles] = React.useState(0);
   const [ville, setVille] = React.useState("");
+  const [type, setType] = React.useState("");
   //Form values
   const [form_categories, setForm_Categories] = React.useState(null);
   const [form_minPrix, setForm_MinPrix] = React.useState(0);
@@ -28,6 +34,7 @@ export default function AnonceFilter({ setisList, isList, setAnonces }) {
   const [form_chambres, setForm_Chambres] = React.useState(0);
   const [form_salles, setForm_Salles] = React.useState(0);
   const [form_ville, setForm_Ville] = React.useState("");
+  const [form_type, setForm_Type] = React.useState("");
   //Dialogue state
   const [open, setOpen] = React.useState(false);
 
@@ -37,6 +44,7 @@ export default function AnonceFilter({ setisList, isList, setAnonces }) {
   const [Error_salles, setError_Salles] = React.useState(false);
 
   React.useEffect(() => {
+    init();
     if (categories == null) {
       fetch("http://localhost:8080/api/Search/categories")
         .then((res) => res.json())
@@ -96,6 +104,7 @@ export default function AnonceFilter({ setisList, isList, setAnonces }) {
     setForm_Chambres(chambres);
     setForm_Salles(salles);
     setForm_Ville(ville);
+    setForm_Type(type);
   };
 
   const handleCloseCancel = () => {
@@ -113,13 +122,22 @@ export default function AnonceFilter({ setisList, isList, setAnonces }) {
       setChambres(form_chambres);
       setSalles(form_salles);
       setVille(form_ville);
+      setType(form_type);
       const categoriesArray = [];
       form_categories.forEach((element) => {
         if (element.state) {
           categoriesArray.push(element.id);
         }
       });
-      console.log(categoriesArray);
+      console.log({
+        minPrix: form_minPrix,
+        maxPrix: form_maxPrix,
+        chambres: form_chambres,
+        salles: form_salles,
+        categories: categoriesArray,
+        ville: form_ville,
+        type: form_type,
+      });
       fetch("http://localhost:8080/api/Search/filter", {
         method: "POST",
         headers: {
@@ -132,6 +150,7 @@ export default function AnonceFilter({ setisList, isList, setAnonces }) {
           salles: form_salles,
           categories: categoriesArray,
           ville: form_ville,
+          type: form_type,
         }),
       })
         .then((res) => res.json())
@@ -169,13 +188,14 @@ export default function AnonceFilter({ setisList, isList, setAnonces }) {
           Filter
         </Button>
         <Button
-          startIcon={
-            isList ? <FmdGoodRoundedIcon color="error" /> : <ListIcon />
-          }
+          startIcon={isList ? <FmdGoodRoundedIcon /> : <ListIcon />}
           variant="outlined"
           color="Black"
           size="medium"
-          sx={{ minWidth: "fit-content", maxHeight: "31px" }}
+          sx={{
+            minWidth: "fit-content",
+            maxHeight: "31px",
+          }}
           onClick={() => {
             setisList(!isList);
           }}
@@ -294,6 +314,44 @@ export default function AnonceFilter({ setisList, isList, setAnonces }) {
               );
             }}
           />
+          <DialogTitle sx={{ padding: 0, paddingTop: "20px", marginBottom: 0 }}>
+            Type
+          </DialogTitle>
+          <RadioGroup
+            name="sexe"
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+            }}
+          >
+            <FormControlLabel
+              value="0"
+              control={<Radio />}
+              onClick={(e) => {
+                setForm_Type(e.target.value);
+              }}
+              checked={form_type == "0"}
+              label="Louer"
+            />
+            <FormControlLabel
+              value="1"
+              control={<Radio />}
+              onClick={(e) => {
+                setForm_Type(e.target.value);
+              }}
+              checked={form_type == "1"}
+              label="acheter"
+            />
+            <FormControlLabel
+              value="-1"
+              control={<Radio />}
+              onClick={(e) => {
+                setForm_Type(e.target.value);
+              }}
+              checked={form_type == "-1"}
+              label="all"
+            />
+          </RadioGroup>
           <DialogTitle
             sx={{ padding: 0, paddingTop: "20px", marginBottom: "0px" }}
           >

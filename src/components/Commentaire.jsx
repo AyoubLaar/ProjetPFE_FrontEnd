@@ -1,6 +1,7 @@
 import { Stack, Typography } from "@mui/material";
 
 const Commentaire = ({ membre, contenu, datePub }) => {
+  console.log(datePub);
   return (
     <Stack direction="column" gap={0} padding={1}>
       <Stack direction="column" flexWrap="wrap">
@@ -8,15 +9,15 @@ const Commentaire = ({ membre, contenu, datePub }) => {
           {membre.nom + " " + membre.prenom}
         </Typography>
         <Typography variant="caption">
-          {new Date(datePub).getDay() +
+          {new Date(datePub).getUTCDate() +
             "/" +
-            new Date(datePub).getMonth() +
+            (new Date(datePub).getUTCMonth() + 1) +
             "/" +
-            new Date(datePub).getFullYear() +
+            new Date(datePub).getUTCFullYear() +
             "  " +
-            `${new Date(datePub).getHours()}:${new Date(
+            `${new Date(datePub).getUTCHours()}:${new Date(
               datePub
-            ).getMinutes()}:${new Date(datePub).getSeconds()}`}
+            ).getUTCMinutes()}:${new Date(datePub).getUTCSeconds()}`}
         </Typography>
       </Stack>
       <Typography variant="body1">{contenu}</Typography>

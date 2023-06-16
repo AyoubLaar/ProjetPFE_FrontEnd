@@ -15,6 +15,7 @@ import RequireAuthentication from "./components/RequireAuthentication";
 import RequireAdminAuthentication from "./components/RequireAdminAuthentication";
 import AdminPage from "./Pages/AdminPage";
 import SignUp from "./Pages/SignUp";
+import Profile from "./Pages/Profile";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
     element: <Search />,
     errorElement: <ErrorPage />,
   },
+
   {
     path: "/Login",
     element: <Login />,
@@ -49,6 +51,11 @@ const router = createBrowserRouter([
   {
     path: "/Signup",
     element: <SignUp />,
+  },
+  {
+    path: "/Profile",
+    element: <RequireAuthentication children={<Profile />} />,
+    errorElement: <ErrorPage />,
   },
 ]);
 

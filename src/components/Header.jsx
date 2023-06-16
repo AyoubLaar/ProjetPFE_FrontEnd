@@ -16,11 +16,13 @@ import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import Menu from "@mui/material/Menu";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import MenuItem from "@mui/material/MenuItem";
 
 const Header = () => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const jwt = window.localStorage.getItem("ESTATE_HUB_JWT");
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -29,7 +31,6 @@ const Header = () => {
     setAnchorEl(null);
   };
 
-  const jwt = window.localStorage.getItem("ESTATE_HUB_JWT");
   const pages = [
     { innerHTML: "Search", icon: <SearchIcon />, href: "/" },
     {
@@ -94,7 +95,7 @@ const Header = () => {
             window.location.assign("/");
           }}
         >
-          Logout
+          Sign out
         </MenuItem>
       </Menu>
     </div>
@@ -148,6 +149,92 @@ const Header = () => {
             </Button>
           </ListItem>
         ))}
+        {jwt == null ? (
+          <ListItem sx={{ padding: 0 }}>
+            <Button
+              sx={{
+                width: "100%",
+                borderRadius: "0",
+                borderTop: "none",
+                borderLeft: "none",
+                borderRight: "none",
+                justifyContent: "start",
+                paddingLeft: "20%",
+                "&:hover": {
+                  borderTop: "none",
+                  borderLeft: "none",
+                  borderRight: "none",
+                  backgroundColor: "lightblue",
+                },
+              }}
+              variant="outlined"
+              color="primary"
+              startIcon={<SearchIcon />}
+              size="large"
+              href="/Login"
+            >
+              Sign In
+            </Button>
+          </ListItem>
+        ) : (
+          [
+            <ListItem sx={{ padding: 0 }}>
+              <Button
+                sx={{
+                  width: "100%",
+                  borderRadius: "0",
+                  borderTop: "none",
+                  borderLeft: "none",
+                  borderRight: "none",
+                  justifyContent: "start",
+                  paddingLeft: "20%",
+                  "&:hover": {
+                    borderTop: "none",
+                    borderLeft: "none",
+                    borderRight: "none",
+                    backgroundColor: "lightblue",
+                  },
+                }}
+                variant="outlined"
+                color="primary"
+                startIcon={<AccountCircleOutlinedIcon />}
+                size="large"
+                href="/Profile"
+              >
+                Profile
+              </Button>
+            </ListItem>,
+            <ListItem sx={{ padding: 0 }}>
+              <Button
+                sx={{
+                  width: "100%",
+                  borderRadius: "0",
+                  borderTop: "none",
+                  borderLeft: "none",
+                  borderRight: "none",
+                  justifyContent: "start",
+                  paddingLeft: "20%",
+                  "&:hover": {
+                    borderTop: "none",
+                    borderLeft: "none",
+                    borderRight: "none",
+                    backgroundColor: "lightblue",
+                  },
+                }}
+                variant="outlined"
+                color="primary"
+                startIcon={<ExitToAppIcon />}
+                size="large"
+                onClick={() => {
+                  window.localStorage.removeItem("ESTATE_HUB_JWT");
+                  window.location.assign("/");
+                }}
+              >
+                Sign out
+              </Button>
+            </ListItem>,
+          ]
+        )}
       </List>
     </Box>
   );

@@ -5,38 +5,28 @@ import MapIcon from "@mui/icons-material/Map";
 import React from "react";
 import ListCommentaire from "../components/ListCommentaires";
 
-/*
-membre
-datePub
-contenu
-*/
-
 const Anonce = () => {
   const idAnonce = React.useRef(useParams().id);
-  const [Data, setData] = React.useState({
-    Nom: "",
-    Surface: "",
-    nbreSalleBain: "",
-    nbreChambres: "",
-    nbreEtages: "",
-    prix: "",
-    latitude: "",
-    description: "",
-    longitude: "",
-    email: "",
-    telephone: "",
-    imageUrl: "",
-    Commentaires: [],
-  });
+  const [Data, setData] = React.useState(null);
   React.useEffect(() => {
     fetch("http://localhost:8080/api/Search/Anonce?id=" + idAnonce.current)
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("HTTP status " + res.status);
+        }
+        return res.json();
+      })
       .then((data) => {
         console.log(data);
         setData(data);
+      })
+      .catch((e) => {
+        window.location.assign("/");
       });
   }, []);
-  return (
+  return Data == null ? (
+    <></>
+  ) : (
     <>
       <Header />
       <Paper elevation={5} sx={{ width: "90%", margin: "15px auto" }}>
@@ -125,9 +115,13 @@ const Anonce = () => {
               justifyContent: "flex-end",
             }}
           >
-            <a href={"/Reserver/" + idAnonce.current}>
-              <Button variant="contained">Reserver</Button>
-            </a>
+            <Button
+              href={"/Reserver/" + idAnonce.current}
+              variant="contained"
+              disabled={Data.type == "achat"}
+            >
+              Reserver
+            </Button>
           </div>
           <ListCommentaire commentaires={Data.Commentaires} />
         </Stack>
