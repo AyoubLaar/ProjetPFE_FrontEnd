@@ -11,6 +11,7 @@ import { Paper, RadioGroup, FormControlLabel, Radio } from "@mui/material";
 
 export default function SignUp() {
   const [confirmedPassword, setConfirmedPassword] = React.useState("");
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
