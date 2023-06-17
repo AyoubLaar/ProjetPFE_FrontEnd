@@ -16,6 +16,8 @@ import RequireAdminAuthentication from "./components/RequireAdminAuthentication"
 import AdminPage from "./Pages/AdminPage";
 import SignUp from "./Pages/SignUp";
 import Profile from "./Pages/Profile";
+import ModifierUser from "./Pages/ModifierUser";
+import ModifierAnonce from "./Pages/ModifierAnonce";
 
 const router = createBrowserRouter([
   {
@@ -55,6 +57,16 @@ const router = createBrowserRouter([
   {
     path: "/Profile",
     element: <RequireAuthentication children={<Profile />} />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/Modifier/User",
+    element: <RequireAuthentication children={<ModifierUser />} />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/Anonce/Modifier/:id",
+    element: <RequireAuthentication children={<ModifierAnonce />} />,
     errorElement: <ErrorPage />,
   },
 ]);

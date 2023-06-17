@@ -24,7 +24,7 @@ const Reservations = ({ reservations, setReservations }) => {
         if (!res.ok) {
           throw new Error();
         }
-        alert("Cancelation successful !");
+        alert("Cancelation successfull !");
         setReservations(
           reservations.map((res) => {
             if (res.id == id) {
@@ -56,7 +56,7 @@ const Reservations = ({ reservations, setReservations }) => {
         if (!res.ok) {
           throw new Error();
         }
-        alert("UnCancelation successful !");
+        alert("enabling succesfull !");
         setReservations(
           reservations.map((res) => {
             if (res.id == id) {
@@ -67,7 +67,7 @@ const Reservations = ({ reservations, setReservations }) => {
         );
       })
       .catch((e) => {
-        alert("Cannot uncancel !");
+        alert("enabling failed !");
       });
   };
 
@@ -142,7 +142,7 @@ const Reservations = ({ reservations, setReservations }) => {
             </TableCell>
             <TableCell>
               <Button
-                color="error"
+                color={row.status == "cancelled" ? "primary" : "error"}
                 disabled={row.status == "accepted" || row.status == "refused"}
                 onClick={() => {
                   row.status == "cancelled"

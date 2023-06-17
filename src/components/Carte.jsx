@@ -43,7 +43,7 @@ const Carte = ({ idChosen, setIdAnonce, anonces }) => {
       "height: 100%;" +
       "width: 100%;";
     try {
-      map.current = L.map(map_div.current.id).setView({ lat: 0, lng: 0 }, 1);
+      map.current = L.map(map_div.current.id).setView({ lat: 0, lng: 0 }, 2);
       console.log("map is not null");
       L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(
         map.current
@@ -73,19 +73,17 @@ const Carte = ({ idChosen, setIdAnonce, anonces }) => {
           handleClickOpen();
         }, 500);
       }
-    } else {
-      console.log(open);
     }
     return () => {
       document.getElementById("root").style = "";
     };
-  });
+  }, []);
 
   React.useEffect(() => {
     map.current.off();
     map.current.remove();
     try {
-      map.current = L.map(map_div.current.id).setView({ lat: 0, lng: 0 }, 1);
+      map.current = L.map(map_div.current.id).setView({ lat: 0, lng: 0 }, 2);
       console.log("map is not null");
       L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(
         map.current

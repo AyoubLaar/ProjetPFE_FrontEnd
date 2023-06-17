@@ -5,9 +5,12 @@ import Tab from "@mui/material/Tab";
 import { TabContext, TabPanel, TabList } from "@mui/lab";
 import Header from "../components/Header";
 import Reservations from "../components/Reservations";
+import ListAnonceProprietaire from "../components/ListAnonceProprietaire";
 import AccountDetails from "../components/AccountDetails";
 
 export default function Profile() {
+  const [isModifying, setIsModifying] = React.useState(false);
+  const [userData, setUserData] = React.useState(null);
   const [reservations, setReservations] = React.useState(null);
   const [Anonces, setAnonces] = React.useState(null);
   const [value, setValue] = React.useState("1");
@@ -16,8 +19,30 @@ export default function Profile() {
     setValue(newValue);
   };
   React.useEffect(() => {
+    const jwt = window.localStorage.getItem("ESTATE_HUB_JWT");
+    if (userData == null) {
+      const options = {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          Authorization: "Bearer " + jwt,
+        },
+      };
+      fetch("http://localhost:8080/api/Membre/User/Retrieve", options)
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error();
+          }
+          return res.json();
+        })
+        .then((data) => {
+          setUserData(data);
+        })
+        .catch((e) => {
+          console.log("User exception thrown");
+        });
+    }
     if (reservations == null) {
-      const jwt = window.localStorage.getItem("ESTATE_HUB_JWT");
       const options = {
         method: "GET",
         mode: "cors",
@@ -36,12 +61,11 @@ export default function Profile() {
           setReservations(data);
         })
         .catch((e) => {
-          console.log("exception thrown!");
+          console.log("Reservations exception thrown!");
         });
     }
 
     if (Anonces == null) {
-      const jwt = window.localStorage.getItem("ESTATE_HUB_JWT");
       const options = {
         method: "GET",
         mode: "cors",
@@ -60,7 +84,7 @@ export default function Profile() {
           setAnonces(data);
         })
         .catch((e) => {
-          console.log("exception thrown!");
+          console.log("Anonces exception thrown!");
         });
     }
   }, []);
@@ -86,7 +110,7 @@ export default function Profile() {
             </TabList>
           </Box>
           <TabPanel value="1">
-            <AccountDetails />
+            <AccountDetails Data={userData} />
           </TabPanel>
           {reservations == null || reservations.length == 0 ? (
             []
@@ -95,13 +119,16 @@ export default function Profile() {
               <Reservations
                 reservations={reservations}
                 setReservations={setReservations}
+                setIsModifying={setIsModifying}
               />
             </TabPanel>
           )}
           {Anonces == null || Anonces.length == 0 ? (
             []
           ) : (
-            <TabPanel value="3">Item Three</TabPanel>
+            <TabPanel value="3">
+              <ListAnonceProprietaire anonces={Anonces} />;
+            </TabPanel>
           )}
         </TabContext>
       </Paper>
