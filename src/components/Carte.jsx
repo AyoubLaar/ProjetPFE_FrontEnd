@@ -11,6 +11,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const Carte = ({ idChosen, setIdAnonce, anonces }) => {
+  console.log(anonces);
   const map_div = React.useRef(null);
   const map = React.useRef(null);
 
@@ -79,6 +80,45 @@ const Carte = ({ idChosen, setIdAnonce, anonces }) => {
       document.getElementById("root").style = "";
     };
   });
+
+  React.useEffect(() => {
+    map.current.off();
+    map.current.remove();
+    try {
+      map.current = L.map(map_div.current.id).setView({ lat: 0, lng: 0 }, 1);
+      console.log("map is not null");
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(
+        map.current
+      );
+
+      for (let i = 0; i < anonces.length; i++) {
+        let marker = L.marker({
+          lat: anonces[i].latitude,
+          lng: anonces[i].longitude,
+        }).on("click", (e) => {
+          handleMarkerClick(e);
+        });
+        marker.id = anonces[i].idAnonce;
+        marker.addTo(map.current);
+      }
+    } catch (error) {
+      if (error.message.includes("Map container is already initialized"))
+        console.log("React Strict mode !");
+      else console.log(error);
+    }
+    if (idChosen != null && currentAnonce == null) {
+      let anonce = findById(anonces, idChosen);
+      if (anonce != null) {
+        map.current.setView({ lat: anonce.latitude, lng: anonce.longitude }, 5);
+        setTimeout(() => {
+          setCurrentAnonce(anonce);
+          handleClickOpen();
+        }, 500);
+      }
+    } else {
+      console.log(open);
+    }
+  }, [anonces]);
 
   return (
     <>

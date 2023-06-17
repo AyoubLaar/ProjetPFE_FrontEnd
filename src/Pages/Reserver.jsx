@@ -1,32 +1,39 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Header from "../components/Header";
-import { Paper, RadioGroup, FormControlLabel, Radio } from "@mui/material";
+import { Paper } from "@mui/material";
 import { useParams } from "react-router-dom";
 
 const Reserver = () => {
   const [errorEnfants, seterrorEnfants] = React.useState(false);
   const [errorAdultes, seterrorAdultes] = React.useState(false);
+  const [disabled, setDisabled] = React.useState(false);
   const id = useParams().id;
 
   const handleSubmit = (event) => {
+    setDisabled(true);
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
 
     if (
       formData.get("DateReservationArrive") == "" ||
       formData.get("DateReservationDepart") == "" ||
-      formData.get("emailClient") == null ||
       formData.get("nbrEnfants") == null ||
       formData.get("nbrAdultes") == null
     ) {
       alert("Veuillez remplir tout les champs !");
+      setDisabled(false);
+    } else if (
+      formData.get("emailClient") == "" &&
+      formData.get("telephoneClient") == ""
+    ) {
+      alert("Remplissez au moins l'un des deux champs Email ou Telephone !");
+      setDisabled(false);
     } else {
       const reservation_dto = {
         id: id,
@@ -35,6 +42,7 @@ const Reserver = () => {
         emailClient: formData.get("emailClient"),
         nbrEnfants: formData.get("nbrEnfants"),
         nbrAdultes: formData.get("nbrAdultes"),
+        telephoneClient: formData.get("telephoneClient"),
       };
       console.log(reservation_dto);
       const token = window.localStorage.getItem("ESTATE_HUB_JWT");
@@ -57,6 +65,9 @@ const Reserver = () => {
         })
         .catch((e) => {
           alert("Reservation invalide !");
+        })
+        .finally(() => {
+          setDisabled(false);
         });
     }
   };
@@ -108,18 +119,6 @@ const Reserver = () => {
                   <TextField
                     required
                     fullWidth
-                    InputLabelProps={{ shrink: true }}
-                    id="emailClient"
-                    label="Email"
-                    name="emailClient"
-                    helperText="Pour que le proprietaire puisse communiquer à vous"
-                  />
-                </Grid>
-
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
                     label="Enfants"
                     type="number"
                     name="nbrEnfants"
@@ -152,14 +151,34 @@ const Reserver = () => {
                     }}
                   />
                 </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    InputLabelProps={{ shrink: true }}
+                    id="telephoneClient"
+                    label="Telephone"
+                    name="telephoneClient"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    InputLabelProps={{ shrink: true }}
+                    id="emailClient"
+                    label="Email"
+                    name="emailClient"
+                    helperText="remplir au moins l'un des deux champs Email ou Telephone"
+                  />
+                </Grid>
               </Grid>
-
-              <RadioGroup></RadioGroup>
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                disabled={disabled}
               >
                 RESERVER
               </Button>
