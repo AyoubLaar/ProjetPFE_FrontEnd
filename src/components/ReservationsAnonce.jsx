@@ -80,10 +80,10 @@ const ReservationsAnonce = () => {
             sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
           >
             <TableCell>
-              <Typography>{row.emailClient}</Typography>
+              <Typography>{row.emailClient || "-"}</Typography>
             </TableCell>
             <TableCell>
-              <Typography>{row.telephone || "-"}</Typography>
+              <Typography>{row.telephoneClient || "-"}</Typography>
             </TableCell>
             <TableCell>
               <Typography>{row.DateReservationArrive}</Typography>
