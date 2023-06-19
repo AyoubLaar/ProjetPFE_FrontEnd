@@ -169,7 +169,6 @@ export default function SignUp() {
                 </Grid>
               </Grid>
 
-              <RadioGroup></RadioGroup>
               <Button
                 type="submit"
                 fullWidth

@@ -15,7 +15,7 @@ const CommentaireForm = () => {
         placeholder="add comment ..."
         value={comment}
         onChange={(e) => {
-          setComment(e.target.value);
+          if (e.target.value.length <= 255) setComment(e.target.value);
         }}
         onClick={() => {
           const jwt = window.localStorage.getItem("ESTATE_HUB_JWT");

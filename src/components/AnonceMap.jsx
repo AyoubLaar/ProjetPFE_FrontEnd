@@ -27,6 +27,9 @@ const AnonceMap = ({ anonce }) => {
             justifyContent="end"
             padding={2}
             sx={{
+              "&:hover": {
+                backgroundColor: "rgb(0,0,0,0.5)",
+              },
               backgroundColor: "rgb(0,0,0,0.2)",
             }}
           >

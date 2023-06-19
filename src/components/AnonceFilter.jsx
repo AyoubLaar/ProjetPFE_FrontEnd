@@ -308,8 +308,6 @@ export default function AnonceFilter({ setisList, isList, setAnonces }) {
                   type="text"
                   fullWidth
                   variant="standard"
-                  value={ville}
-                  onChange={(e) => setVille(e.target.value)}
                 />
               );
             }}
@@ -318,7 +316,7 @@ export default function AnonceFilter({ setisList, isList, setAnonces }) {
             Type
           </DialogTitle>
           <RadioGroup
-            name="sexe"
+            name="type"
             sx={{
               display: "flex",
               flexDirection: "row",

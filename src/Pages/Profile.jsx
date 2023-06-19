@@ -9,7 +9,6 @@ import ListAnonceProprietaire from "../components/ListAnonceProprietaire";
 import AccountDetails from "../components/AccountDetails";
 
 export default function Profile() {
-  const [isModifying, setIsModifying] = React.useState(false);
   const [userData, setUserData] = React.useState(null);
   const [reservations, setReservations] = React.useState(null);
   const [Anonces, setAnonces] = React.useState(null);
@@ -119,7 +118,6 @@ export default function Profile() {
               <Reservations
                 reservations={reservations}
                 setReservations={setReservations}
-                setIsModifying={setIsModifying}
               />
             </TabPanel>
           )}

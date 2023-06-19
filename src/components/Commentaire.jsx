@@ -20,7 +20,15 @@ const Commentaire = ({ membre, contenu, datePub }) => {
             ).getUTCMinutes()}:${new Date(datePub).getUTCSeconds()}`}
         </Typography>
       </Stack>
-      <Typography variant="body1">{contenu}</Typography>
+      <Typography
+        width="1"
+        variant="body1"
+        sx={{
+          overflowWrap: "break-word",
+        }}
+      >
+        {contenu}
+      </Typography>
     </Stack>
   );
 };

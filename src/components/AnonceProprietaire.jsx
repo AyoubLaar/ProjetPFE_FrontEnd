@@ -33,7 +33,7 @@ export default function AnonceProprietaire({ anonce }) {
           Map
         </Button>
         <a
-          href={`/Anonce/Modifier/${anonce.idAnonce}`}
+          href={`/Details/Anonce/${anonce.idAnonce}`}
           style={{
             width: "100%",
             height: "100%",
@@ -47,6 +47,9 @@ export default function AnonceProprietaire({ anonce }) {
             justifyContent="end"
             padding={2}
             sx={{
+              "&:hover": {
+                backgroundColor: "rgb(0,0,0,0.5)",
+              },
               backgroundColor: "rgb(0,0,0,0.2)",
             }}
           >

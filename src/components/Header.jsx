@@ -32,7 +32,7 @@ const Header = () => {
   };
 
   const pages = [
-    { innerHTML: "Search", icon: <SearchIcon />, href: "/" },
+    // { innerHTML: "Search", icon: <SearchIcon />, href: "/" },
     {
       innerHTML: "Publier Anonce",
       icon: <AddCircleOutlineOutlinedIcon />,

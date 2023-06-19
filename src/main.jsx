@@ -17,6 +17,7 @@ import AdminPage from "./Pages/AdminPage";
 import SignUp from "./Pages/SignUp";
 import Profile from "./Pages/Profile";
 import ModifierUser from "./Pages/ModifierUser";
+import DetailsAnonce from "./Pages/DetailsAnonce";
 import ModifierAnonce from "./Pages/ModifierAnonce";
 
 const router = createBrowserRouter([
@@ -65,8 +66,13 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "/Anonce/Modifier/:id",
+    path: "/Modifier/Anonce/:id",
     element: <RequireAuthentication children={<ModifierAnonce />} />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/Details/Anonce/:id",
+    element: <RequireAuthentication children={<DetailsAnonce />} />,
     errorElement: <ErrorPage />,
   },
 ]);

@@ -48,6 +48,9 @@ export default function Anonce({ anonce }) {
             padding={2}
             sx={{
               backgroundColor: "rgb(0,0,0,0.2)",
+              "&:hover": {
+                backgroundColor: "rgb(0,0,0,0.5)",
+              },
             }}
           >
             <Typography
