@@ -50,9 +50,17 @@ export default function AnonceProprietaire({ anonce }) {
               "&:hover": {
                 backgroundColor: "rgb(0,0,0,0.5)",
               },
-              backgroundColor: "rgb(0,0,0,0.2)",
+              backgroundColor:
+                anonce.status == "enabled"
+                  ? "rgb(0,0,0,0.3)"
+                  : anonce.status == "userDisabled"
+                  ? "rgb(0,0,255,0.3)"
+                  : "rgb(255,0,0,0.3)",
             }}
           >
+            <Typography variant="body1" fontWeight={500}>
+              {anonce.type}
+            </Typography>
             <Typography
               variant="h5"
               fontWeight={700}

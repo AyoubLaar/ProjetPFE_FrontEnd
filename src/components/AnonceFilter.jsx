@@ -26,7 +26,7 @@ export default function AnonceFilter({ setisList, isList, setAnonces }) {
   const [chambres, setChambres] = React.useState(0);
   const [salles, setSalles] = React.useState(0);
   const [ville, setVille] = React.useState("");
-  const [type, setType] = React.useState("");
+  const [type, setType] = React.useState("-1");
   //Form values
   const [form_categories, setForm_Categories] = React.useState(null);
   const [form_minPrix, setForm_MinPrix] = React.useState(0);

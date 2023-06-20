@@ -47,12 +47,15 @@ export default function Anonce({ anonce }) {
             justifyContent="end"
             padding={2}
             sx={{
-              backgroundColor: "rgb(0,0,0,0.2)",
+              backgroundColor: "rgb(0,0,0,0.3)",
               "&:hover": {
                 backgroundColor: "rgb(0,0,0,0.5)",
               },
             }}
           >
+            <Typography variant="body1" fontWeight={700}>
+              {anonce.type}
+            </Typography>
             <Typography
               variant="h5"
               fontWeight={700}

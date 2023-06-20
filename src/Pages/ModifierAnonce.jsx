@@ -119,9 +119,7 @@ const ModifierAnonce = () => {
             if (!error && result.event === "success") {
               setFormData({
                 ...formData,
-                public_id: result.info.public_id,
                 imageUrl: result.info.secure_url,
-                fileName: result.info.original_filename,
               });
             }
           }
@@ -143,10 +141,6 @@ const ModifierAnonce = () => {
   }, [formData]);
 
   //#region
-  const [markerPosition, setMarkerPosition] = useState({
-    lat: 33.66492,
-    lng: -7.817975,
-  });
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -167,24 +161,6 @@ const ModifierAnonce = () => {
     e.preventDefault();
     setDisabled(true);
     const token = jwt.current;
-    const Data = {
-      latitude: markerPosition.lat,
-      longitude: markerPosition.lng,
-      prix: formData.prix,
-      surface: formData.surface,
-      chambres: formData.chambres,
-      sallesDeBain: formData.sallesDeBain,
-      etages: formData.etages,
-      nomAnonce: formData.nomAnonce,
-      description: formData.description,
-      imageUrl: formData.imageUrl,
-      email: formData.email,
-      telephone: formData.telephone,
-      ville: formData.ville,
-      region: formData.region,
-      categories: formData.categories,
-      type: formData.type,
-    };
     const options = {
       method: "POST",
       mode: "cors",
@@ -192,17 +168,20 @@ const ModifierAnonce = () => {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
       },
-      body: JSON.stringify(Data),
+      body: JSON.stringify(formData),
     };
-    console.log(Data);
-    fetch("http://localhost:8080/api/Membre/Modifier/Anonce", options)
+    console.log(formData);
+    fetch(
+      "http://localhost:8080/api/Membre/Modify/Anonce?id=" + idAnonce.current,
+      options
+    )
       .then((res) => {
         if (!res.ok) throw new Error();
-        alert("Publication effectué avec succées");
+        alert("Modification effectué avec succées");
         window.location.assign("/");
       })
       .catch((e) => {
-        alert("Erreur publication");
+        alert("Erreur modification");
         setDisabled(false);
       });
   };
@@ -264,15 +243,18 @@ const ModifierAnonce = () => {
     }
     if (currentStep === 4) {
       if (formData.imageUrl === "") {
-        errors.nomAnonce = "image is required";
+        alert("image is required");
         isValid = false;
       }
     }
     return isValid;
   };
 
-  const handleDeleteImage = (public_id) => {
-    if (public_id != null) {
+  const handleDeleteImage = () => {
+    if (formData.imageUrl != null || formData.imageUrl != "") {
+      const splitImage = formData.imageUrl.split("/");
+      const public_id = splitImage[splitImage.length - 1].split(".")[0];
+      console.log(public_id);
       const token = jwt.current;
       fetch(
         "http://localhost:8080/api/Membre/DeleteFile?public_id=" + public_id,
@@ -298,8 +280,6 @@ const ModifierAnonce = () => {
         });
     }
   };
-
-  const handleChangeImage = () => {};
 
   //#endregion
   return (
@@ -791,15 +771,36 @@ const ModifierAnonce = () => {
                             <Button
                               component="label"
                               variant="contained"
-                              onClick={handleChangeImage}
+                              color="error"
+                              disabled={formData.imageUrl == ""}
+                              onClick={() => {
+                                handleDeleteImage();
+                              }}
                             >
-                              Change Image
+                              Delete
+                            </Button>
+                            <Button
+                              component="label"
+                              variant="contained"
+                              onClick={() => {
+                                widget.current.open();
+                              }}
+                              disabled={formData.imageUrl != ""}
+                            >
+                              Select
                             </Button>
                           </Stack>
                         </Grid>
                         <Grid item xs={12}>
-                          <Typography variant="h5" padding={1}>
-                            {"File : " + formData.fileName}
+                          <Typography
+                            variant="h5"
+                            padding={1}
+                            sx={{ wordBreak: "break-all" }}
+                          >
+                            {"File : " +
+                              formData.imageUrl.split("/")[
+                                formData.imageUrl.split("/").length - 1
+                              ]}
                           </Typography>
                         </Grid>
                       </Grid>

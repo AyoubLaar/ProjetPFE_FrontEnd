@@ -778,7 +778,11 @@ const Form = () => {
                       </Stack>
                     </Grid>
                     <Grid item xs={12}>
-                      <Typography variant="h5" padding={1}>
+                      <Typography
+                        variant="h5"
+                        padding={1}
+                        sx={{ wordBreak: "break-all" }}
+                      >
                         {"File : " + formData.fileName}
                       </Typography>
                     </Grid>
@@ -834,7 +838,7 @@ const Form = () => {
           Previous
         </Button>
         <Typography component="h1" variant="h5">
-          Step {currentStep} : Selectionner une image
+          Step {currentStep} : Validation des données
         </Typography>
         <Button variant="contained" onClick={handleSubmit} disabled={disabled}>
           Submit

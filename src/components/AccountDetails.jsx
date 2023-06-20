@@ -14,10 +14,20 @@ const AccountDetails = ({ Data }) => {
         Object.keys(Data).map((key) => {
           return (
             <Stack direction={"row"} gap={1}>
-              <Typography color={"primary"}>
+              <Typography
+                color={"primary"}
+                sx={{
+                  overflowWrap: "break-word",
+                }}
+              >
                 {key.toUpperCase() + "  :"}
               </Typography>
-              <Typography color={Data[key] ? "" : "error"}>
+              <Typography
+                color={Data[key] ? "" : "error"}
+                sx={{
+                  overflowWrap: "break-word",
+                }}
+              >
                 {Data[key] || "Modify to fill this field"}
               </Typography>
             </Stack>

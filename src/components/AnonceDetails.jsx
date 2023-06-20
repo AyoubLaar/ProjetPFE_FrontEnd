@@ -18,6 +18,16 @@ const AnonceDetails = ({ Data }) => {
               md: "row",
             }}
           >
+            <CardMedia
+              image={Data.imageUrl}
+              sx={{
+                height: "400px",
+                minWidth: {
+                  md: "500px",
+                  xs: "100%",
+                },
+              }}
+            ></CardMedia>
             <Stack direction="column" gap={1}>
               <Typography
                 variant="h5"
@@ -28,7 +38,10 @@ const AnonceDetails = ({ Data }) => {
               >
                 Details
               </Typography>
-              <Typography variant="body1">Nom : {Data.nomAnonce}</Typography>
+              <Typography variant="body1">Nom : {Data.nomAnonce}</Typography>{" "}
+              <Typography variant="body1">
+                type : {Data.type == "location" ? "à louer " : "à acheter"}
+              </Typography>
               <Typography variant="body1">
                 {"Location : " + Data.ville + " , " + Data.region}
               </Typography>

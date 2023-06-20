@@ -9,12 +9,37 @@ import { TabContext, TabPanel, TabList } from "@mui/lab";
 import ReservationsAnonce from "../components/ReservationsAnonce";
 
 const DetailsAnonce = () => {
+  const jwt = React.useRef(window.localStorage.getItem("ESTATE_HUB_JWT"));
   const idAnonce = React.useRef(useParams().id);
   const [Data, setData] = React.useState(null);
   const [value, setValue] = React.useState("1");
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const activer = () => {
+    fetch(
+      "http://localhost:8080/api/Membre/Modify/Anonce/ChangeStatus?id=" +
+        idAnonce.current,
+      {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + jwt.current,
+        },
+      }
+    )
+      .then((res) => {
+        if (!res.ok) throw new Error();
+        setData({
+          ...Data,
+          status: Data.status == "userDisabled" ? "enabled" : "userDisabled",
+        });
+      })
+      .catch((e) => {
+        alert("Unauthorized!");
+      });
+  };
+
   React.useEffect(() => {
     const jwt = window.localStorage.getItem("ESTATE_HUB_JWT");
     const options = {
@@ -57,7 +82,19 @@ const DetailsAnonce = () => {
           </Box>
           <TabPanel value="1">
             <Stack direction="column" gap={3} width="100%">
-              <Stack alignItems="end">
+              <Stack direction="row" justifyContent="end" gap={3}>
+                <Button
+                  disabled={Data.status == "adminDisabled"}
+                  onClick={() => {
+                    activer();
+                  }}
+                  variant="contained"
+                  color={Data.status == "enabled" ? "error" : "primary"}
+                >
+                  <Typography>
+                    {Data.status == "enabled" ? "desactiver" : "activer"}
+                  </Typography>
+                </Button>
                 <Button
                   href={"/Modifier/Anonce/" + idAnonce.current}
                   variant="contained"
@@ -95,6 +132,17 @@ const DetailsAnonce = () => {
                   >
                     {Data.Nom}
                   </Typography>
+                  <Typography>
+                    etat :{" "}
+                    {Data.status == "adminDisabled"
+                      ? "desactivé par l'admin"
+                      : Data.status == "userDisabled"
+                      ? "desactivé par l'utilisateur"
+                      : "active"}
+                  </Typography>
+                  <Typography variant="body1">
+                    type : {Data.type == "location" ? "à louer" : "à acheter"}
+                  </Typography>
                   <Typography variant="body1">
                     {"Location : " + Data.ville + " , " + Data.region}
                   </Typography>
@@ -129,6 +177,7 @@ const DetailsAnonce = () => {
                 <Typography variant="h5" fontWeight={700}>
                   Summary :
                 </Typography>
+
                 <Typography variant="body1" sx={{ overflowWrap: "break-word" }}>
                   {Data.description}
                 </Typography>
