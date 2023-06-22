@@ -180,14 +180,19 @@ export default function ModifierUser() {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <RadioGroup name="sexe" defaultValue={user.sexe}>
+                  <RadioGroup
+                    name="sexe"
+                    defaultValue={
+                      user.sexe == "HOMME" ? 0 : user.sexe == "FEMME" ? 1 : ""
+                    }
+                  >
                     <FormControlLabel
-                      value="F"
+                      value="1"
                       control={<Radio />}
                       label="Femme"
                     />
                     <FormControlLabel
-                      value="H"
+                      value="0"
                       control={<Radio />}
                       label="Homme"
                     />

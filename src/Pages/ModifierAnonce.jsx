@@ -17,6 +17,7 @@ import {
 import AnonceDetails from "../components/AnonceDetails";
 import Header from "../components/Header";
 import { useParams } from "react-router";
+import { Form } from "react-router-dom";
 
 const ModifierAnonce = () => {
   const idAnonce = React.useRef(useParams().id);
@@ -26,6 +27,7 @@ const ModifierAnonce = () => {
   const [categories, setCategories] = React.useState(null);
   const [currentStep, setCurrentStep] = useState(1);
   const [disabled, setDisabled] = React.useState(false);
+  const [url, setUrl] = React.useState("");
   const widget = React.useRef();
   const cloudinaryRef = React.useRef();
 
@@ -117,10 +119,7 @@ const ModifierAnonce = () => {
           },
           (error, result) => {
             if (!error && result.event === "success") {
-              setFormData({
-                ...formData,
-                imageUrl: result.info.secure_url,
-              });
+              setUrl(result.info.secure_url);
             }
           }
         );
@@ -141,6 +140,11 @@ const ModifierAnonce = () => {
   }, [formData]);
 
   //#region
+  React.useEffect(() => {
+    if (url != "") {
+      setFormData({ ...formData, imageUrl: url });
+    }
+  }, [url]);
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -271,9 +275,8 @@ const ModifierAnonce = () => {
           setFormData({
             ...formData,
             imageUrl: "",
-            public_id: null,
-            fileName: "",
           });
+          setUrl("");
         })
         .catch((e) => {
           alert("Cannot delete file!");

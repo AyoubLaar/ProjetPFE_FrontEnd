@@ -156,12 +156,12 @@ export default function SignUp() {
                 <Grid item xs={12}>
                   <RadioGroup name="sexe">
                     <FormControlLabel
-                      value="F"
+                      value="1"
                       control={<Radio />}
                       label="Femme"
                     />
                     <FormControlLabel
-                      value="H"
+                      value="0"
                       control={<Radio />}
                       label="Homme"
                     />

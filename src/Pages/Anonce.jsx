@@ -118,13 +118,16 @@ const Anonce = () => {
               justifyContent: "flex-end",
             }}
           >
-            <Button
-              href={"/Reserver/" + idAnonce.current}
-              variant="contained"
-              disabled={Data.type == "achat"}
-            >
-              Reserver
-            </Button>
+            {Data.type == "achat" ? (
+              <></>
+            ) : (
+              <Button
+                href={"/Reserver/" + idAnonce.current}
+                variant="contained"
+              >
+                Reserver
+              </Button>
+            )}
           </div>
           <ListCommentaire commentaires={Data.Commentaires} />
         </Stack>
