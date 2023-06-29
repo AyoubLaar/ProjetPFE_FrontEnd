@@ -3,7 +3,7 @@ import { CardMedia, Button, Typography, Stack } from "@mui/material";
 import FmdGoodRoundedIcon from "@mui/icons-material/FmdGoodRounded";
 import Rating from "@mui/material/Rating";
 
-export default function Anonce({ anonce }) {
+export default function AnonceProprietaire({ anonce }) {
   return (
     <Stack>
       <CardMedia
@@ -34,7 +34,7 @@ export default function Anonce({ anonce }) {
           Map
         </Button>
         <a
-          href={`/Anonce/${anonce.idAnonce}`}
+          href={`/admin/Details/Anonce/${anonce.idAnonce}`}
           style={{
             width: "100%",
             height: "100%",
@@ -48,13 +48,18 @@ export default function Anonce({ anonce }) {
             justifyContent="end"
             padding={2}
             sx={{
-              backgroundColor: "rgb(0,0,0,0.3)",
               "&:hover": {
                 backgroundColor: "rgb(0,0,0,0.5)",
               },
+              backgroundColor:
+                anonce.status == "enabled"
+                  ? "rgb(0,0,0,0.3)"
+                  : anonce.status == "userDisabled"
+                  ? "rgb(0,0,255,0.9)"
+                  : "rgb(255,0,0,0.9)",
             }}
           >
-            <Typography variant="body1" fontWeight={700}>
+            <Typography variant="body1" fontWeight={500}>
               {anonce.type}
             </Typography>
             <Typography

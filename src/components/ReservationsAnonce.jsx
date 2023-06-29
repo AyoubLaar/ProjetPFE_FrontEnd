@@ -38,12 +38,70 @@ const ReservationsAnonce = () => {
     }
   }, []);
 
+  const accept = (id) => {
+    const jwt = window.localStorage.getItem("ESTATE_HUB_JWT");
+    const options = {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + jwt,
+      },
+      mode: "cors",
+    };
+    fetch(
+      "http://localhost:8080/api/Membre/Reservations/accept?id=" + id,
+      options
+    )
+      .then((res) => {
+        if (!res.ok) throw new Error();
+        setReservations(
+          reservations.map((reservation) => {
+            return reservation.id == id
+              ? { ...reservation, status: "accepted" }
+              : reservation;
+          })
+        );
+      })
+      .catch((e) => {
+        alert("acceptation a echoué !");
+      });
+  };
+  const refuse = (id) => {
+    const jwt = window.localStorage.getItem("ESTATE_HUB_JWT");
+    const options = {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + jwt,
+      },
+      mode: "cors",
+    };
+    fetch(
+      "http://localhost:8080/api/Membre/Reservations/refuse?id=" + id,
+      options
+    )
+      .then((res) => {
+        if (!res.ok) throw new Error();
+        setReservations(
+          reservations.map((reservation) => {
+            return reservation.id == id
+              ? { ...reservation, status: "refused" }
+              : reservation;
+          })
+        );
+      })
+      .catch((e) => {
+        alert("refus a echoué !");
+      });
+  };
+
   return reservations == null ? (
     <></>
   ) : (
     <Table aria-label="simple table" sx={{ width: "100%", overflow: "hidden" }}>
       <TableHead>
         <TableRow>
+          <TableCell>
+            <Typography>id</Typography>
+          </TableCell>
           <TableCell>
             <Typography>Email</Typography>
           </TableCell>
@@ -80,6 +138,9 @@ const ReservationsAnonce = () => {
             sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
           >
             <TableCell>
+              <Typography>{row.id}</Typography>
+            </TableCell>
+            <TableCell>
               <Typography>{row.emailClient || "-"}</Typography>
             </TableCell>
             <TableCell>
@@ -102,8 +163,6 @@ const ReservationsAnonce = () => {
                 color={
                   row.status == "cancelled" || row.status == "refused"
                     ? "error"
-                    : row.status == "accepted"
-                    ? "success"
                     : "primary"
                 }
               >
@@ -115,9 +174,7 @@ const ReservationsAnonce = () => {
                 color="primary"
                 disabled={row.status != "pending"}
                 onClick={() => {
-                  row.status == "cancelled"
-                    ? handleUnCancel(row.id)
-                    : handleCancel(row.id);
+                  accept(row.id);
                 }}
               >
                 accept
@@ -128,9 +185,7 @@ const ReservationsAnonce = () => {
                 color="error"
                 disabled={row.status != "pending"}
                 onClick={() => {
-                  row.status == "cancelled"
-                    ? handleUnCancel(row.id)
-                    : handleCancel(row.id);
+                  refuse(row.id);
                 }}
               >
                 refuse

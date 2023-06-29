@@ -10,61 +10,11 @@ import ReservationsAnonce from "../components/ReservationsAnonce";
 
 const DetailsAnonce = () => {
   const jwt = React.useRef(window.localStorage.getItem("ESTATE_HUB_JWT"));
-  const [confirmer, setConfirmer] = React.useState(false);
   const idAnonce = React.useRef(useParams().id);
   const [Data, setData] = React.useState(null);
   const [value, setValue] = React.useState("1");
   const handleChange = (event, newValue) => {
     setValue(newValue);
-  };
-
-  const activer = () => {
-    fetch(
-      "http://localhost:8080/api/Membre/Modify/Anonce/ChangeStatus?id=" +
-        idAnonce.current,
-      {
-        method: "POST",
-        headers: {
-          Authorization: "Bearer " + jwt.current,
-        },
-      }
-    )
-      .then((res) => {
-        if (!res.ok) throw new Error();
-        setData({
-          ...Data,
-          status: Data.status == "userDisabled" ? "enabled" : "userDisabled",
-        });
-      })
-      .catch((e) => {
-        alert("Unauthorized!");
-      });
-  };
-
-  const supprimer = () => {
-    if (confirmer) {
-      fetch(
-        "http://localhost:8080/api/Membre/Modify/Anonce/supprimer?id=" +
-          idAnonce.current,
-        {
-          method: "POST",
-          headers: {
-            Authorization: "Bearer " + jwt.current,
-          },
-        }
-      )
-        .then((res) => {
-          if (!res.ok) throw new Error();
-          alert("anonce supprimer !");
-          window.location.assign("/profile");
-        })
-        .catch((e) => {
-          alert("Unauthorized action!");
-          setConfirmer(false);
-        });
-    } else {
-      setConfirmer(true);
-    }
   };
 
   React.useEffect(() => {
@@ -76,7 +26,7 @@ const DetailsAnonce = () => {
       },
     };
     fetch(
-      "http://localhost:8080/api/Membre/Anonce?id=" + idAnonce.current,
+      "http://localhost:8080/api/Admin/Anonce?id=" + idAnonce.current,
       options
     )
       .then((res) => {
@@ -110,17 +60,6 @@ const DetailsAnonce = () => {
           <TabPanel value="1">
             <Stack direction="column" gap={3} width="100%">
               <Stack direction="row" justifyContent="end" gap={3}>
-                <Button
-                  onClick={() => {
-                    supprimer();
-                  }}
-                  variant="contained"
-                  color={"error"}
-                >
-                  <Typography>
-                    {confirmer ? "Confirmer" : "supprimer"}
-                  </Typography>
-                </Button>
                 <Button
                   disabled={Data.status == "adminDisabled"}
                   onClick={() => {

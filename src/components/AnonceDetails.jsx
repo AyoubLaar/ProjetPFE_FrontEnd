@@ -45,7 +45,10 @@ const AnonceDetails = ({ Data }) => {
               <Typography variant="body1">
                 {"Location : " + Data.ville + " , " + Data.region}
               </Typography>
-              <Typography variant="body1">prix : {Data.prix} dh</Typography>
+              <Typography variant="body1">
+                prix : {Data.prix} dh{" "}
+                {Data.type == "location" ? "par nuit" : ""}
+              </Typography>
               <Typography variant="body1">
                 surface : {Data.surface} m2
               </Typography>

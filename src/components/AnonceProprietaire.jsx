@@ -73,7 +73,8 @@ export default function AnonceProprietaire({ anonce }) {
               {anonce.nbreEtoiles}/5 stars
             </Typography>
             <Typography variant="body1" fontWeight={500}>
-              prix : {anonce.prix} dh
+              prix : {anonce.prix} dh{" "}
+              {anonce.type == "location" ? "par nuit" : ""}
             </Typography>
             <Typography
               variant="body1"

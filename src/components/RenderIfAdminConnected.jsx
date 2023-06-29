@@ -1,6 +1,6 @@
 import React from "react";
 
-const RenderIfAdminConnected = () => {
+const RenderIfAdminConnected = ({ children }) => {
   const jwt = window.localStorage.getItem("ESTATE_HUB_JWT");
   const [Authentified, setAuthentified] = React.useState(null);
 
@@ -20,10 +20,11 @@ const RenderIfAdminConnected = () => {
         }
       })
       .catch((e) => {
-        window.localStorage.removeItem("ESTATE_HUB_JWT");
         setAuthentified(false);
       });
   }
+
+  return Authentified == null ? <></> : Authentified ? children : <></>;
 };
 
 export default RenderIfAdminConnected;

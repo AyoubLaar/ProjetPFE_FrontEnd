@@ -7,7 +7,7 @@ const CommentaireForm = () => {
   const [show, setShow] = React.useState(false);
   const [comment, setComment] = React.useState("");
   return (
-    <Stack direction={"column"} gap={3} alignItems={"end"} padding={1}>
+    <Stack direction={"column"} gap={1} alignItems={"end"} padding={1}>
       <TextField
         fullWidth
         multiline

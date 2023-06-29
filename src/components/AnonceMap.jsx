@@ -33,6 +33,7 @@ const AnonceMap = ({ anonce }) => {
               backgroundColor: "rgb(0,0,0,0.2)",
             }}
           >
+            <Typography fontWeight={700}>{anonce.type}</Typography>
             <Typography
               variant="h5"
               fontWeight={700}
@@ -45,7 +46,8 @@ const AnonceMap = ({ anonce }) => {
               {anonce.nbreEtoiles}/5 stars
             </Typography>
             <Typography variant="body1" fontWeight={500}>
-              prix : {anonce.prix} dh
+              prix : {anonce.prix} dh{" "}
+              {anonce.type == "location" ? "par nuit" : ""}
             </Typography>
             <Typography
               variant="body1"

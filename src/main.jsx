@@ -19,6 +19,9 @@ import Profile from "./Pages/Profile";
 import ModifierUser from "./Pages/ModifierUser";
 import DetailsAnonce from "./Pages/DetailsAnonce";
 import ModifierAnonce from "./Pages/ModifierAnonce";
+import Evaluer from "./Pages/Evaluer";
+import UserAdminDetails from "./Pages/UserAdminDetails";
+import AnonceAdminDetails from "./Pages/AnonceAdminDetails";
 
 const router = createBrowserRouter([
   {
@@ -73,6 +76,21 @@ const router = createBrowserRouter([
   {
     path: "/Details/Anonce/:id",
     element: <RequireAuthentication children={<DetailsAnonce />} />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/admin/Anonce/:id",
+    element: <RequireAdminAuthentication children={<AnonceAdminDetails />} />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/admin/user/:id",
+    element: <RequireAdminAuthentication children={<UserAdminDetails />} />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/evaluer/:id",
+    element: <RequireAuthentication children={<Evaluer />} />,
     errorElement: <ErrorPage />,
   },
 ]);

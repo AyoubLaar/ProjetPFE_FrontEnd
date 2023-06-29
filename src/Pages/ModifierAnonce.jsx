@@ -17,7 +17,6 @@ import {
 import AnonceDetails from "../components/AnonceDetails";
 import Header from "../components/Header";
 import { useParams } from "react-router";
-import { Form } from "react-router-dom";
 
 const ModifierAnonce = () => {
   const idAnonce = React.useRef(useParams().id);
@@ -99,7 +98,7 @@ const ModifierAnonce = () => {
         })
         .catch((e) => {
           alert("access denied !");
-          window.location;
+          window.location.assign();
         });
     }
     return () => {
@@ -256,12 +255,9 @@ const ModifierAnonce = () => {
 
   const handleDeleteImage = () => {
     if (formData.imageUrl != null || formData.imageUrl != "") {
-      const splitImage = formData.imageUrl.split("/");
-      const public_id = splitImage[splitImage.length - 1].split(".")[0];
-      console.log(public_id);
       const token = jwt.current;
       fetch(
-        "http://localhost:8080/api/Membre/DeleteFile?public_id=" + public_id,
+        "http://localhost:8080/api/Membre/DeleteFile?id=" + idAnonce.current,
         {
           method: "DELETE",
           mode: "cors",
@@ -775,7 +771,10 @@ const ModifierAnonce = () => {
                               component="label"
                               variant="contained"
                               color="error"
-                              disabled={formData.imageUrl == ""}
+                              disabled={
+                                formData.imageUrl == "" ||
+                                formData.imageUrl == null
+                              }
                               onClick={() => {
                                 handleDeleteImage();
                               }}
@@ -788,7 +787,10 @@ const ModifierAnonce = () => {
                               onClick={() => {
                                 widget.current.open();
                               }}
-                              disabled={formData.imageUrl != ""}
+                              disabled={
+                                formData.imageUrl != "" &&
+                                formData.imageUrl != null
+                              }
                             >
                               Select
                             </Button>
@@ -800,10 +802,12 @@ const ModifierAnonce = () => {
                             padding={1}
                             sx={{ wordBreak: "break-all" }}
                           >
-                            {"File : " +
-                              formData.imageUrl.split("/")[
-                                formData.imageUrl.split("/").length - 1
-                              ]}
+                            {formData.imageUrl != null
+                              ? "File : " +
+                                formData.imageUrl.split("/")[
+                                  formData.imageUrl.split("/").length - 1
+                                ]
+                              : "File : "}
                           </Typography>
                         </Grid>
                       </Grid>

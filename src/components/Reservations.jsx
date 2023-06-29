@@ -7,6 +7,8 @@ import TableRow from "@mui/material/TableRow";
 import { Button, Typography } from "@mui/material";
 
 const Reservations = ({ reservations, setReservations }) => {
+  console.log(reservations);
+
   const handleCancel = (id) => {
     const jwt = window.localStorage.getItem("ESTATE_HUB_JWT");
     const options = {
@@ -99,7 +101,7 @@ const Reservations = ({ reservations, setReservations }) => {
             <Typography>Etat</Typography>
           </TableCell>
           <TableCell>
-            <Typography>Cancel</Typography>
+            <Typography>action</Typography>
           </TableCell>
         </TableRow>
       </TableHead>
@@ -130,28 +132,43 @@ const Reservations = ({ reservations, setReservations }) => {
             <TableCell>
               <Typography
                 color={
-                  row.status == "cancelled" || row.status == "refused"
+                  row.status == "refused" || row.status == "cancelled"
                     ? "error"
-                    : row.status == "accepted"
-                    ? "success"
                     : "primary"
                 }
               >
-                {row.status}
+                {row.status == "enAttenteEvaluation"
+                  ? "en attente d'evaluation"
+                  : row.status}
               </Typography>
             </TableCell>
             <TableCell>
-              <Button
-                color={row.status == "cancelled" ? "primary" : "error"}
-                disabled={row.status == "accepted" || row.status == "refused"}
-                onClick={() => {
-                  row.status == "cancelled"
-                    ? handleUnCancel(row.id)
-                    : handleCancel(row.id);
-                }}
-              >
-                {row.status == "cancelled" ? "enable" : "cancel"}
-              </Button>
+              {row.status == "pending" || row.status == "cancelled" ? (
+                <Button
+                  color={"error"}
+                  disabled={
+                    row.status != "cancelled" && row.status != "pending"
+                  }
+                  onClick={() => {
+                    row.status == "cancelled"
+                      ? handleUnCancel(row.id)
+                      : handleCancel(row.id);
+                  }}
+                  sx={{ padding: "0" }}
+                >
+                  {row.status == "cancelled" ? "enable" : "cancel"}
+                </Button>
+              ) : row.status == "enAttenteEvaluation" ? (
+                <Button
+                  color={"primary"}
+                  href={"evaluer/" + row.id}
+                  sx={{ padding: "0" }}
+                >
+                  evaluer
+                </Button>
+              ) : (
+                <></>
+              )}
             </TableCell>
           </TableRow>
         ))}

@@ -15,9 +15,11 @@ import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOu
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import Menu from "@mui/material/Menu";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import MenuItem from "@mui/material/MenuItem";
+import RenderIfAdminConnected from "./RenderIfAdminConnected";
 
 const Header = () => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -32,7 +34,6 @@ const Header = () => {
   };
 
   const pages = [
-    // { innerHTML: "Search", icon: <SearchIcon />, href: "/" },
     {
       innerHTML: "Publier Anonce",
       icon: <AddCircleOutlineOutlinedIcon />,
@@ -49,6 +50,18 @@ const Header = () => {
       startIcon={<VpnKeyOutlinedIcon />}
     >
       <Typography fontWeight={400}>{"Sign in"}</Typography>
+    </Button>
+  );
+
+  const AdminButton = (
+    <Button
+      size="small"
+      variant="outlined"
+      color="error"
+      href={"/admin"}
+      startIcon={<AdminPanelSettingsIcon />}
+    >
+      <Typography fontWeight={400}>{"admin"}</Typography>
     </Button>
   );
 
@@ -235,6 +248,38 @@ const Header = () => {
             </ListItem>,
           ]
         )}
+        <RenderIfAdminConnected
+          children={
+            <ListItem sx={{ padding: 0 }}>
+              <Button
+                sx={{
+                  width: "100%",
+                  borderRadius: "0",
+                  borderTop: "none",
+                  borderLeft: "none",
+                  borderRight: "none",
+                  justifyContent: "start",
+                  paddingLeft: "20%",
+                  "&:hover": {
+                    borderTop: "none",
+                    borderLeft: "none",
+                    borderRight: "none",
+                    backgroundColor: "lightblue",
+                  },
+                }}
+                variant="outlined"
+                color="error"
+                startIcon={<AdminPanelSettingsIcon />}
+                size="large"
+                onClick={() => {
+                  window.location.assign("/admin");
+                }}
+              >
+                admin
+              </Button>
+            </ListItem>
+          }
+        />
       </List>
     </Box>
   );
@@ -255,6 +300,7 @@ const Header = () => {
             flex={1}
             sx={{ display: { xs: "none", sm: "none", md: "flex" } }}
           >
+            <RenderIfAdminConnected children={AdminButton} />
             {pages.map((page) => (
               <Button
                 size="small"
