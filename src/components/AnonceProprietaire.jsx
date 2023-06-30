@@ -13,25 +13,29 @@ export default function AnonceProprietaire({ anonce }) {
           height: "400px",
         }}
       >
-        <Button
-          variant="outlined"
-          sx={{
-            position: "absolute",
-            top: "0",
-            right: "0",
-            color: "white",
-            border: "1px solid white",
-            borderRadius: "0",
-            "&:hover": {
-              borderColor: "white",
-              backgroundColor: "rgb(255,255,255,.1)",
-            },
-          }}
-          startIcon={<FmdGoodRoundedIcon color="error" />}
-          href={"/Search/" + anonce.idAnonce}
-        >
-          Map
-        </Button>
+        {anonce.status != "enabled" ? (
+          <></>
+        ) : (
+          <Button
+            variant="outlined"
+            sx={{
+              position: "absolute",
+              top: "0",
+              right: "0",
+              color: "white",
+              border: "1px solid white",
+              borderRadius: "0",
+              "&:hover": {
+                borderColor: "white",
+                backgroundColor: "rgb(255,255,255,.1)",
+              },
+            }}
+            startIcon={<FmdGoodRoundedIcon color="error" />}
+            href={"/Search/" + anonce.idAnonce}
+          >
+            Map
+          </Button>
+        )}
         <a
           href={`/Details/Anonce/${anonce.idAnonce}`}
           style={{

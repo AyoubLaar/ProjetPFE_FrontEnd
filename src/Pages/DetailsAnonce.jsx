@@ -200,15 +200,26 @@ const DetailsAnonce = () => {
                   <Typography variant="body1">
                     Nombre Salles de bain : {Data.nbreSalleBain}{" "}
                   </Typography>
-                  <a href={"/Search/" + idAnonce.current}>
+                  {Data.status == "enabled" ? (
+                    <a href={"/Search/" + idAnonce.current}>
+                      <Button
+                        startIcon={<MapIcon />}
+                        variant="contained"
+                        sx={{ width: "fit-content" }}
+                      >
+                        Show On Map
+                      </Button>
+                    </a>
+                  ) : (
                     <Button
                       startIcon={<MapIcon />}
                       variant="contained"
                       sx={{ width: "fit-content" }}
+                      disabled
                     >
                       Show On Map
                     </Button>
-                  </a>
+                  )}
                 </Stack>
               </Stack>
               <Stack direction="column" gap={1}>

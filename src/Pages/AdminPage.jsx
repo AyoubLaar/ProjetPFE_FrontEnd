@@ -78,18 +78,39 @@ const AdminPage = () => {
     fetch("http://localhost:8080/api/Admin/User/toggle?id=" + id, options)
       .then((res) => {
         if (!res.ok) throw new Error();
+        let userStatus;
         setUsers(
           users.map((user) => {
             if (user.id === id) {
               if (user.status === "enabled") {
+                userStatus = "adminDisabled";
                 return { ...user, status: "adminDisabled" };
               }
               if (user.status === "adminDisabled") {
+                userStatus = "enabled";
                 return { ...user, status: "enabled" };
               }
             } else {
               return user;
             }
+          })
+        );
+        setAnonces(
+          anonces.map((anonce) => {
+            if (
+              anonce.idProprietaire == id &&
+              (anonce.status == "enabled" ||
+                anonce.status == "disabledWithUser")
+            ) {
+              return {
+                ...anonce,
+                status:
+                  userStatus == "adminDisabled"
+                    ? "disabledWithUser"
+                    : "enabled",
+              };
+            }
+            return anonce;
           })
         );
       })
@@ -165,6 +186,9 @@ const AdminPage = () => {
                     <TableRow>
                       <TableCell>
                         <Typography>id</Typography>
+                      </TableCell>{" "}
+                      <TableCell>
+                        <Typography>Proprietaire</Typography>
                       </TableCell>
                       <TableCell>
                         <Typography>Nom</Typography>
@@ -203,6 +227,14 @@ const AdminPage = () => {
                             style={{ textDecoration: "none" }}
                           >
                             <Typography>{row.idAnonce}</Typography>
+                          </a>
+                        </TableCell>
+                        <TableCell component="th" scope="row">
+                          <a
+                            href={"/admin/user/" + row.idProprietaire}
+                            style={{ textDecoration: "none" }}
+                          >
+                            <Typography>{row.idProprietaire}</Typography>{" "}
                           </a>
                         </TableCell>
                         <TableCell component="th" scope="row">

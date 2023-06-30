@@ -1,8 +1,39 @@
 import React from "react";
 import { Stack, Button, Typography, TextField } from "@mui/material";
 
-const AccountDetails = ({ Data }) => {
+const AccountDetailsAdmin = ({ Data, userData, setData }) => {
   const [confirmed, setConfirmed] = React.useState(false);
+
+  const toggle = () => {
+    const jwt = window.localStorage.getItem("ESTATE_HUB_JWT");
+    const options = {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Authorization: "Bearer " + jwt,
+      },
+    };
+    fetch("http://localhost:8080/api/Admin/User/toggle?id=" + Data.id, options)
+      .then((res) => {
+        if (!res.ok) throw new Error();
+        let A = userData.anonces;
+        if (userData.status == "adminDisabled") {
+          for (let i = 0; i < A.length; i++) {
+            A[i].status = "enabled";
+          }
+          setData({ ...userData, status: "enabled", anonces: A });
+        }
+        if (userData.status == "enabled") {
+          for (let i = 0; i < A.length; i++) {
+            A[i].status = "adminDisabled";
+          }
+          setData({ ...userData, status: "adminDisabled", A: anonces });
+        }
+      })
+      .catch((e) => {
+        alert("Error toggling!");
+      });
+  };
 
   const supprimer = () => {
     if (confirmed) {
@@ -14,14 +45,16 @@ const AccountDetails = ({ Data }) => {
           Authorization: "Bearer " + jwt,
         },
       };
-      fetch("http://localhost:8080/api/Membre/Modify/User/supprimer", options)
+      fetch(
+        "http://localhost:8080/api/Admin/User/supprimer?id=" + Data.id,
+        options
+      )
         .then((res) => {
           if (!res.ok) throw new Error();
-          window.localStorage.removeItem("ESTATE_HUB_JWT");
-          window.location.assign("/");
+          setData({ ...userData, status: "adminRemoved" });
         })
         .catch((e) => {
-          alert("Error suppression!");
+          alert("Error toggling!");
         });
     } else {
       setConfirmed(true);
@@ -37,12 +70,17 @@ const AccountDetails = ({ Data }) => {
           }}
           variant="contained"
           color="error"
-          disabled={Data.status == "removed"}
+          disabled={Data.status == "removed" || Data.status == "adminRemoved"}
         >
           <Typography>{confirmed ? "confirmer" : "supprimer"}</Typography>
         </Button>
-        <Button href="/modifier/user" variant="contained">
-          <Typography>Modifier</Typography>
+        <Button
+          onClick={() => {
+            toggle();
+          }}
+          variant="contained"
+        >
+          <Typography>Toggle</Typography>
         </Button>
       </Stack>
       {Data != null ? (
@@ -63,7 +101,7 @@ const AccountDetails = ({ Data }) => {
                   overflowWrap: "break-word",
                 }}
               >
-                {Data[key] || "Modify to fill this field"}
+                {Data[key] || "undefined"}
               </Typography>
             </Stack>
           );
@@ -77,4 +115,4 @@ const AccountDetails = ({ Data }) => {
   );
 };
 
-export default AccountDetails;
+export default AccountDetailsAdmin;

@@ -46,6 +46,10 @@ const ModifierAnonce = () => {
             return { id: categorie, state: false };
           });
           setCategories(newData);
+        })
+        .catch((e) => {
+          alert("error connecting to the server");
+          window.location.assign("/profile");
         });
     }
     if (villes == null) {
@@ -58,7 +62,7 @@ const ModifierAnonce = () => {
         .catch((e) => {
           console.log(e);
           alert("error connecting to server !");
-          window.location.assign("/");
+          window.location.assign("/profile");
         });
     }
     if (regions == null) {
@@ -72,7 +76,7 @@ const ModifierAnonce = () => {
         })
         .catch((e) => {
           alert("error connecting to server !");
-          window.location.assign("/");
+          window.location.assign("/profile");
         });
     }
     if (formData == null) {
@@ -98,7 +102,7 @@ const ModifierAnonce = () => {
         })
         .catch((e) => {
           alert("access denied !");
-          window.location.assign();
+          window.location.assign("/profile");
         });
     }
     return () => {
@@ -139,11 +143,6 @@ const ModifierAnonce = () => {
   }, [formData]);
 
   //#region
-  React.useEffect(() => {
-    if (url != "") {
-      setFormData({ ...formData, imageUrl: url });
-    }
-  }, [url]);
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -171,9 +170,9 @@ const ModifierAnonce = () => {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify({ ...formData, imageUrl: url }),
     };
-    console.log(formData);
+    console.log({ ...formData, imageUrl: url });
     fetch(
       "http://localhost:8080/api/Membre/Modify/Anonce?id=" + idAnonce.current,
       options
@@ -245,7 +244,7 @@ const ModifierAnonce = () => {
       }
     }
     if (currentStep === 4) {
-      if (formData.imageUrl === "") {
+      if (formData.imageUrl === "" && url === "") {
         alert("image is required");
         isValid = false;
       }
@@ -254,7 +253,8 @@ const ModifierAnonce = () => {
   };
 
   const handleDeleteImage = () => {
-    if (formData.imageUrl != null || formData.imageUrl != "") {
+    if (formData.imageUrl != null && formData.imageUrl != "") {
+      console.log('imageUrl != null && != ""');
       const token = jwt.current;
       fetch(
         "http://localhost:8080/api/Membre/DeleteFile?id=" + idAnonce.current,
@@ -277,6 +277,26 @@ const ModifierAnonce = () => {
         .catch((e) => {
           alert("Cannot delete file!");
         });
+    } else {
+      if (url != "" && url != null) {
+        console.log("url not empty !");
+        const token = jwt.current;
+        fetch("http://localhost:8080/api/Membre/DeleteFileCloudinary", {
+          method: "DELETE",
+          mode: "cors",
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+          body: JSON.stringify({ url: url }),
+        })
+          .then((res) => {
+            if (!res.ok) throw new Error();
+            setUrl("");
+          })
+          .catch((e) => {
+            alert("Cannot delete file!");
+          });
+      }
     }
   };
 
@@ -772,8 +792,9 @@ const ModifierAnonce = () => {
                               variant="contained"
                               color="error"
                               disabled={
-                                formData.imageUrl == "" ||
-                                formData.imageUrl == null
+                                (formData.imageUrl == "" ||
+                                  formData.imageUrl == null) &&
+                                url == ""
                               }
                               onClick={() => {
                                 handleDeleteImage();
@@ -788,8 +809,9 @@ const ModifierAnonce = () => {
                                 widget.current.open();
                               }}
                               disabled={
-                                formData.imageUrl != "" &&
-                                formData.imageUrl != null
+                                (formData.imageUrl != "" &&
+                                  formData.imageUrl != null) ||
+                                url != ""
                               }
                             >
                               Select
@@ -802,11 +824,15 @@ const ModifierAnonce = () => {
                             padding={1}
                             sx={{ wordBreak: "break-all" }}
                           >
-                            {formData.imageUrl != null
+                            {formData.imageUrl != null &&
+                            formData.imageUrl != ""
                               ? "File : " +
                                 formData.imageUrl.split("/")[
                                   formData.imageUrl.split("/").length - 1
                                 ]
+                              : url != null && url != ""
+                              ? "File : " +
+                                url.split("/")[url.split("/").length - 1]
                               : "File : "}
                           </Typography>
                         </Grid>
@@ -846,7 +872,15 @@ const ModifierAnonce = () => {
       ) : currentStep == 5 ? (
         <>
           <div style={{ flex: 1 }}>
-            <AnonceDetails Data={formData} />
+            <AnonceDetails
+              Data={{
+                ...formData,
+                imageUrl:
+                  formData.imageUrl == "" || formData.imageUrl == null
+                    ? url
+                    : formData.imageUrl,
+              }}
+            />
           </div>
           <Paper
             elevation={5}

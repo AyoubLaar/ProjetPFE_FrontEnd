@@ -112,7 +112,7 @@ const Reservations = ({ reservations, setReservations }) => {
             sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
           >
             <TableCell component="th" scope="row">
-              <a href={`/Anonce/${row.setAnonces}`}>{row.anonceName}</a>
+              <a href={`/Anonce/${row.id}`}>{row.anonceName}</a>
             </TableCell>
             <TableCell>
               <Typography>{row.emailClient}</Typography>
