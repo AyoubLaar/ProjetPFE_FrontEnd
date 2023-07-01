@@ -7,10 +7,16 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Header from "../components/Header";
+import { useNavigate } from "react-router";
 import { Paper, RadioGroup, FormControlLabel, Radio } from "@mui/material";
 
 export default function SignUp() {
   const [confirmedPassword, setConfirmedPassword] = React.useState("");
+  const [authentified, setAuthentified] = React.useState(false);
+  const Navigate = useNavigate();
+  React.useEffect(() => {
+    if (authentified == true) Navigate(-1);
+  }, [authentified]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -55,7 +61,7 @@ export default function SignUp() {
           .then((data) => {
             window.localStorage.removeItem("ESTATE_HUB_JWT");
             window.localStorage.setItem("ESTATE_HUB_JWT", data.token);
-            window.location.assign("/");
+            setAuthentified(true);
           })
           .catch((e) => {
             alert("invalid credentials !");

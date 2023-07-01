@@ -39,7 +39,6 @@ const Login = () => {
           console.log("VerifyToken res not ok !");
           throw new Error("HTTP status " + res.status);
         } else {
-          alert("already signed in !");
           setAuthentified(true);
         }
       })

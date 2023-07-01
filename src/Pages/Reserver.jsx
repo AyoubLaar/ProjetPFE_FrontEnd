@@ -35,40 +35,44 @@ const Reserver = () => {
       alert("Remplissez au moins l'un des deux champs Email ou Telephone !");
       setDisabled(false);
     } else {
-      const reservation_dto = {
-        id: id,
-        DateReservationArrive: formData.get("DateReservationArrive"),
-        DateReservationDepart: formData.get("DateReservationDepart"),
-        emailClient: formData.get("emailClient"),
-        nbrEnfants: formData.get("nbrEnfants"),
-        nbrAdultes: formData.get("nbrAdultes"),
-        telephoneClient: formData.get("telephoneClient"),
-      };
-      console.log(reservation_dto);
-      const token = window.localStorage.getItem("ESTATE_HUB_JWT");
-      const options = {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          Authorization: "Bearer " + token,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(reservation_dto),
-      };
-      fetch("http://localhost:8080/api/Membre/Reserver", options)
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error("HTTP status " + res.status);
-          }
-          alert("Reservation effectué avec succés");
-          window.location.assign("/");
-        })
-        .catch((e) => {
-          alert("Reservation invalide !");
-        })
-        .finally(() => {
-          setDisabled(false);
-        });
+      if (!errorEnfants && !errorAdultes) {
+        const reservation_dto = {
+          id: id,
+          DateReservationArrive: formData.get("DateReservationArrive"),
+          DateReservationDepart: formData.get("DateReservationDepart"),
+          emailClient: formData.get("emailClient"),
+          nbrEnfants: formData.get("nbrEnfants"),
+          nbrAdultes: formData.get("nbrAdultes"),
+          telephoneClient: formData.get("telephoneClient"),
+        };
+        console.log(reservation_dto);
+        const token = window.localStorage.getItem("ESTATE_HUB_JWT");
+        const options = {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(reservation_dto),
+        };
+        fetch("http://localhost:8080/api/Membre/Reserver", options)
+          .then((res) => {
+            if (!res.ok) {
+              throw new Error("HTTP status " + res.status);
+            }
+            alert("Reservation effectué avec succés");
+            window.location.assign("/");
+          })
+          .catch((e) => {
+            alert("Reservation invalide !");
+          })
+          .finally(() => {
+            setDisabled(false);
+          });
+      } else {
+        setDisabled(false);
+      }
     }
   };
   return (
@@ -124,6 +128,7 @@ const Reserver = () => {
                     name="nbrEnfants"
                     InputLabelProps={{ shrink: true }}
                     error={errorEnfants}
+                    defaultValue={0}
                     onChange={(e) => {
                       if (e.target.value < 0) {
                         seterrorEnfants(true);
@@ -140,10 +145,11 @@ const Reserver = () => {
                     label="Adultes"
                     type="number"
                     name="nbrAdultes"
+                    defaultValue={1}
                     InputLabelProps={{ shrink: true }}
                     error={errorAdultes}
                     onChange={(e) => {
-                      if (e.target.value < 0) {
+                      if (e.target.value < 1) {
                         seterrorAdultes(true);
                       } else {
                         seterrorAdultes(false);
