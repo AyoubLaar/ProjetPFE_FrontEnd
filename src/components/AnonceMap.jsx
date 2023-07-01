@@ -55,7 +55,7 @@ const AnonceMap = ({ anonce }) => {
               overflow="hidden"
               textOverflow="ellipsis"
             >
-              {anonce.idVille + " , " + anonce.idRegion}
+              {anonce.idPays + " , " + anonce.idVille}
             </Typography>
           </Stack>
         </a>

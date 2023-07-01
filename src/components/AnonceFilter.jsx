@@ -22,7 +22,7 @@ export default function AnonceFilter({ setisList, isList, setAnonces }) {
   //filter values
   const [categories, setCategories] = React.useState(null);
   const [minPrix, setMinPrix] = React.useState(0);
-  const [maxPrix, setMaxPrix] = React.useState(9999999);
+  const [maxPrix, setMaxPrix] = React.useState(100000000000000);
   const [chambres, setChambres] = React.useState(0);
   const [salles, setSalles] = React.useState(0);
   const [ville, setVille] = React.useState("");

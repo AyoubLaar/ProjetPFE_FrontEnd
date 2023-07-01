@@ -87,7 +87,7 @@ const Form = () => {
         });
     }
     if (regions == null) {
-      fetch("http://localhost:8080/api/Search/regions")
+      fetch("http://localhost:8080/api/Search/pays")
         .then((res) => {
           if (!res.ok) throw new Error();
           return res.json();
@@ -151,7 +151,8 @@ const Form = () => {
     email: "",
     telephone: "",
     ville: "",
-    region: "",
+    pays: "",
+    adresse: "",
     categories: [],
   });
 
@@ -187,9 +188,10 @@ const Form = () => {
       email: formData.email,
       telephone: formData.telephone,
       ville: formData.ville,
-      region: formData.region,
+      pays: formData.pays,
       categories: formData.categories,
       type: formData.type,
+      adresse: formData.adresse,
     };
     const options = {
       method: "POST",
@@ -236,53 +238,57 @@ const Form = () => {
 
     if (currentStep === 1) {
       if (formData.type === "") {
-        alert("Anonce Type is required");
+        alert("type est requis");
         isValid = false;
       }
       if (formData.ville === "") {
-        alert("Anonce ville is required");
+        alert("ville est requis");
         isValid = false;
       }
-      if (formData.prix < 0) {
-        alert("Prix must be a positive number");
+      if (formData.prix <= 0) {
+        alert("Prix est strictement positif !");
         isValid = false;
       }
-      if (formData.surface < 0) {
-        alert("surface must be a positive number");
+      if (formData.surface <= 0) {
+        alert("surface est strictement positif !");
         isValid = false;
       }
-      if (formData.nbreChambres < 0) {
-        alert("Number of bedrooms must be a positive number");
+      if (formData.chambres <= 0) {
+        alert("chambres est strictement positif !");
         isValid = false;
       }
-      if (formData.nbreSalleBain < 0) {
-        alert("Number of bathrooms must be a positive number");
+      if (formData.sallesDeBain <= 0) {
+        alert("salles de bain est strictement positif !");
         isValid = false;
       }
-      if (formData.nbreEtages < 0) {
-        alert("Number floors must be a positive number");
+      if (formData.etages <= 0) {
+        alert("etages est strictement positif !");
         isValid = false;
       }
-      if (formData.region == "") {
-        alert("Anonce region is required");
+      if (formData.pays == "") {
+        alert("pays est requis");
         isValid = false;
       }
       if (formData.email == "") {
-        alert("email is required");
+        alert("email est requis");
         isValid = false;
       }
       if (formData.telephone == "") {
-        alert("telephone is required");
+        alert("telephone est requis");
         isValid = false;
       }
     }
     if (currentStep === 2) {
       if (formData.nomAnonce === "") {
-        errors.nomAnonce = "Anonce name is required";
+        alert("Nom est requis");
         isValid = false;
       }
       if (formData.description === "") {
-        errors.description = "Anonce description is required";
+        alert("Description est requis");
+        isValid = false;
+      }
+      if (formData.adresse === "") {
+        alert("Adresse est requis");
         isValid = false;
       }
     }
@@ -433,7 +439,7 @@ const Form = () => {
                         freeSolo
                         inputValue={formData.region}
                         onInputChange={(event, newInputValue) => {
-                          setFormData({ ...formData, region: newInputValue });
+                          setFormData({ ...formData, pays: newInputValue });
                         }}
                         renderInput={(params) => {
                           return (
@@ -443,8 +449,8 @@ const Form = () => {
                               fullWidth
                               InputLabelProps={{ shrink: true }}
                               type="text"
-                              label="Region"
-                              name="region"
+                              label="Pays"
+                              name="pays"
                             />
                           );
                         }}
@@ -637,6 +643,23 @@ const Form = () => {
                         name="description"
                         multiline
                         maxRows={10}
+                      />
+                    </Grid>{" "}
+                    <Grid item xs={12}>
+                      <TextField
+                        required
+                        fullWidth
+                        value={formData.adresse}
+                        InputLabelProps={{ shrink: true }}
+                        type="text"
+                        onChange={(e) => {
+                          if (e.target.value.length <= 255)
+                            handleInputChange(e);
+                        }}
+                        label="Adresse"
+                        name="adresse"
+                        multiline
+                        maxRows={5}
                       />
                     </Grid>{" "}
                     <Grid item xs={12}>

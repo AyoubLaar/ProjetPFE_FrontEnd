@@ -19,18 +19,20 @@ const AccountDetailsAdmin = ({ Data, userData, setData }) => {
         let A = userData.anonces;
         if (userData.status == "adminDisabled") {
           for (let i = 0; i < A.length; i++) {
-            A[i].status = "enabled";
+            if (A[i].status != "adminDisabled") A[i].status = "enabled";
           }
           setData({ ...userData, status: "enabled", anonces: A });
         }
         if (userData.status == "enabled") {
           for (let i = 0; i < A.length; i++) {
-            A[i].status = "adminDisabled";
+            if (A[i].status != "adminDisabled")
+              A[i].status = "DisabledWithUser";
           }
-          setData({ ...userData, status: "adminDisabled", A: anonces });
+          setData({ ...userData, status: "adminDisabled", anonces: A });
         }
       })
       .catch((e) => {
+        console.error(e);
         alert("Error toggling!");
       });
   };

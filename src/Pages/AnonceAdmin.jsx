@@ -121,7 +121,7 @@ const DetailsAnonce = () => {
                     type : {Data.type == "location" ? "à louer" : "à acheter"}
                   </Typography>
                   <Typography variant="body1">
-                    {"Location : " + Data.ville + " , " + Data.region}
+                    {Data.pays + " , " + Data.ville + " " + Data.adresse}
                   </Typography>
                   <Typography variant="body1">
                     {Data.nbrEtoiles} stars

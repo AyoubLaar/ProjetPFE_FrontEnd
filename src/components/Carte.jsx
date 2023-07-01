@@ -68,10 +68,6 @@ const Carte = ({ idChosen, setIdAnonce, anonces }) => {
       let anonce = findById(anonces, idChosen);
       if (anonce != null) {
         map.current.setView({ lat: anonce.latitude, lng: anonce.longitude }, 5);
-        setTimeout(() => {
-          setCurrentAnonce(anonce);
-          handleClickOpen();
-        }, 500);
       }
     }
     return () => {
@@ -108,10 +104,6 @@ const Carte = ({ idChosen, setIdAnonce, anonces }) => {
       let anonce = findById(anonces, idChosen);
       if (anonce != null) {
         map.current.setView({ lat: anonce.latitude, lng: anonce.longitude }, 5);
-        setTimeout(() => {
-          setCurrentAnonce(anonce);
-          handleClickOpen();
-        }, 500);
       }
     } else {
       console.log(open);

@@ -99,7 +99,7 @@ const Anonce = () => {
                 {Data.Nom}
               </Typography>
               <Typography variant="body1">
-                {"Localisation : " + Data.ville + " , " + Data.region}
+                {Data.pays + " , " + Data.ville + " " + Data.adresse}
               </Typography>
               <Typography variant="body1">
                 type : {Data.type == "location" ? "à louer " : "à acheter"}

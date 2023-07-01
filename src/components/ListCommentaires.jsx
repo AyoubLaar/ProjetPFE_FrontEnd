@@ -4,9 +4,9 @@ import { Stack } from "@mui/material";
 
 const ListCommentaire = ({ commentaires }) => {
   return (
-    <Stack direction="column">
+    <Stack direction="column" gap={3}>
       <CommentaireForm />
-      <Stack direction="column" gap={1}>
+      <Stack direction="column" gap={3}>
         {commentaires.map((commentaire) => (
           <Commentaire
             membre={commentaire.membre}

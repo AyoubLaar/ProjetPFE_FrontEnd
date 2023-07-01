@@ -66,7 +66,7 @@ const ModifierAnonce = () => {
         });
     }
     if (regions == null) {
-      fetch("http://localhost:8080/api/Search/regions")
+      fetch("http://localhost:8080/api/Search/pays")
         .then((res) => {
           if (!res.ok) throw new Error();
           return res.json();
@@ -149,7 +149,6 @@ const ModifierAnonce = () => {
   };
 
   const handleNext = () => {
-    console.log(formData);
     if (validateForm()) {
       setCurrentStep(currentStep + 1);
     }
@@ -170,9 +169,12 @@ const ModifierAnonce = () => {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
       },
-      body: JSON.stringify({ ...formData, imageUrl: url }),
+      body: JSON.stringify({
+        ...formData,
+        imageUrl: url == "" ? formData.imageUrl : url,
+      }),
     };
-    console.log({ ...formData, imageUrl: url });
+    console.log({ ...formData, imageUrl: url == "" ? formData.imageUrl : url });
     fetch(
       "http://localhost:8080/api/Membre/Modify/Anonce?id=" + idAnonce.current,
       options
@@ -190,62 +192,70 @@ const ModifierAnonce = () => {
 
   const validateForm = () => {
     let isValid = true;
+    console.log(formData);
 
     if (currentStep === 1) {
-      if (formData.type === "") {
-        alert("Anonce Type is required");
+      if (formData.type === "" || formData.type == null) {
+        alert("type est requis");
         isValid = false;
       }
-      if (formData.ville === "") {
-        alert("Anonce ville is required");
+      if (formData.ville === "" || formData.ville == null) {
+        alert("ville est requis");
         isValid = false;
       }
-      if (formData.prix < 0) {
-        alert("Prix must be a positive number");
+      if (formData.prix <= 0 || formData.prix == null) {
+        alert("Prix est strictement positif !");
         isValid = false;
       }
-      if (formData.surface < 0) {
-        alert("surface must be a positive number");
+      if (formData.surface <= 0 || formData.surface == null) {
+        alert("surface est strictement positif !");
         isValid = false;
       }
-      if (formData.nbreChambres < 0) {
-        alert("Number of bedrooms must be a positive number");
+      if (formData.chambres <= 0 || formData.chambres == null) {
+        alert("chambres est strictement positif !");
         isValid = false;
       }
-      if (formData.nbreSalleBain < 0) {
-        alert("Number of bathrooms must be a positive number");
+      if (formData.sallesDeBain <= 0 || formData.sallesDeBain == null) {
+        alert("salles de bain est strictement positif !");
         isValid = false;
       }
-      if (formData.nbreEtages < 0) {
-        alert("Number floors must be a positive number");
+      if (formData.etages <= 0 || formData.etages == null) {
+        alert("etages est strictement positif !");
         isValid = false;
       }
-      if (formData.region == "") {
-        alert("Anonce region is required");
+      if (formData.pays == "" || formData.pays == null) {
+        alert("pays est requis");
         isValid = false;
       }
-      if (formData.email == "") {
-        alert("email is required");
+      if (formData.email == "" || formData.email == null) {
+        alert("email est requis");
         isValid = false;
       }
-      if (formData.telephone == "") {
-        alert("telephone is required");
+      if (formData.telephone == "" || formData.telephone == null) {
+        alert("telephone est requis");
         isValid = false;
       }
     }
     if (currentStep === 2) {
-      if (formData.nomAnonce === "") {
-        errors.nomAnonce = "Anonce name is required";
+      if (formData.nomAnonce === "" || formData.nomAnonce == null) {
+        alert("Nom est requis");
         isValid = false;
       }
-      if (formData.description === "") {
-        errors.description = "Anonce description is required";
+      if (formData.description === "" || formData.description == null) {
+        alert("Description est requis");
+        isValid = false;
+      }
+      if (formData.adresse === "" || formData.adresse == null) {
+        alert("Adresse est requis");
         isValid = false;
       }
     }
     if (currentStep === 4) {
-      if (formData.imageUrl === "" && url === "") {
-        alert("image is required");
+      if (
+        (formData.imageUrl === "" || formData.imageUrl == null) &&
+        (url === "" || url == null)
+      ) {
+        errors.nomAnonce = "image is required";
         isValid = false;
       }
     }
@@ -443,11 +453,11 @@ const ModifierAnonce = () => {
                           <Autocomplete
                             options={regions}
                             freeSolo
-                            inputValue={formData.region}
+                            inputValue={formData.pays}
                             onInputChange={(event, newInputValue) => {
                               setFormData({
                                 ...formData,
-                                region: newInputValue,
+                                pays: newInputValue,
                               });
                             }}
                             renderInput={(params) => {
@@ -458,8 +468,8 @@ const ModifierAnonce = () => {
                                   fullWidth
                                   InputLabelProps={{ shrink: true }}
                                   type="text"
-                                  label="Region"
-                                  name="region"
+                                  label="Pays"
+                                  name="pays"
                                 />
                               );
                             }}
@@ -660,6 +670,23 @@ const ModifierAnonce = () => {
                             name="description"
                             multiline
                             maxRows={10}
+                          />
+                        </Grid>{" "}
+                        <Grid item xs={12}>
+                          <TextField
+                            required
+                            fullWidth
+                            value={formData.adresse}
+                            InputLabelProps={{ shrink: true }}
+                            type="text"
+                            onChange={(e) => {
+                              if (e.target.value.length <= 255)
+                                handleInputChange(e);
+                            }}
+                            label="Adresse"
+                            name="adresse"
+                            multiline
+                            maxRows={5}
                           />
                         </Grid>{" "}
                         <Grid item xs={12}>

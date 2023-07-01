@@ -4,6 +4,7 @@ import FmdGoodRoundedIcon from "@mui/icons-material/FmdGoodRounded";
 import Rating from "@mui/material/Rating";
 
 export default function Anonce({ anonce }) {
+  console.log(anonce);
   return (
     <Stack>
       <CardMedia
@@ -76,7 +77,7 @@ export default function Anonce({ anonce }) {
               overflow="hidden"
               textOverflow="ellipsis"
             >
-              {anonce.idVille + " , " + anonce.idRegion}
+              {anonce.idPays + " , " + anonce.idVille}
             </Typography>
           </Stack>
         </a>

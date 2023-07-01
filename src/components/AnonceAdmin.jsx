@@ -86,7 +86,7 @@ export default function AnonceProprietaire({ anonce }) {
               overflow="hidden"
               textOverflow="ellipsis"
             >
-              {anonce.idVille + " , " + anonce.idRegion}
+              {anonce.pays + " , " + anonce.idVille}
             </Typography>
           </Stack>
         </a>
