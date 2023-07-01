@@ -36,6 +36,7 @@ export default function Reservation({
               return res;
             })
           );
+          setConfirmed(null);
         })
         .catch((e) => {
           alert("Cancelation failed !");
@@ -82,8 +83,7 @@ export default function Reservation({
         </Typography>
       </TableCell>
       <TableCell>
-        {reservation.status == "pending" ||
-        reservation.status == "cancelled" ? (
+        {reservation.status == "pending" ? (
           <Button
             color={"error"}
             disabled={
