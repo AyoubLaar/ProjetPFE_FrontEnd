@@ -179,7 +179,11 @@ const Anonce = () => {
                   label={"Comments " + "(" + Data.Commentaires.length + ")"}
                   value="1"
                 />
-                <Tab label="Evaluations" value="2" />
+                {Data.type == "location" ? (
+                  <Tab label="Evaluations" value="2" />
+                ) : (
+                  <></>
+                )}
               </TabList>
             </Box>
             <TabPanel value="1">

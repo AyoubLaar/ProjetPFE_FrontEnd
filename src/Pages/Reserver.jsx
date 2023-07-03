@@ -13,7 +13,30 @@ const Reserver = () => {
   const [errorEnfants, seterrorEnfants] = React.useState(false);
   const [errorAdultes, seterrorAdultes] = React.useState(false);
   const [disabled, setDisabled] = React.useState(false);
+  const [authentified, setAuthentified] = React.useState(false);
   const id = useParams().id;
+
+  React.useEffect(() => {
+    fetch("http://localhost:8080/api/Search/Anonce?id=" + id, {
+      method: "GET",
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error();
+        }
+        return res.json();
+      })
+      .then((data) => {
+        if (data.type != "location") {
+          throw new Error();
+        } else {
+          setAuthentified(true);
+        }
+      })
+      .catch((e) => {
+        window.location.assign("/");
+      });
+  }, []);
 
   const handleSubmit = (event) => {
     setDisabled(true);
@@ -75,7 +98,9 @@ const Reserver = () => {
       }
     }
   };
-  return (
+  return !authentified ? (
+    <></>
+  ) : (
     <>
       <Header />
       <Container component="main" maxWidth="sm">
