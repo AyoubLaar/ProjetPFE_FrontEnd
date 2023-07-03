@@ -19,7 +19,6 @@ const CommentaireForm = () => {
         }}
         onClick={() => {
           const jwt = window.localStorage.getItem("ESTATE_HUB_JWT");
-          console.log(jwt);
           if (jwt == null) {
             setShow(false);
             window.location.assign("/login");
@@ -80,8 +79,10 @@ const CommentaireForm = () => {
                   }
                   window.location.reload();
                 })
-                .catch(() => {
+                .catch((e) => {
                   setComment("");
+                  setShow(false);
+                  window.localStorage.removeItem("ESTATE_HUB_JWT");
                 });
             }}
             sx={{ height: "fit-content" }}

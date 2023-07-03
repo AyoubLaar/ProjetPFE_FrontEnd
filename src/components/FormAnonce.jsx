@@ -291,6 +291,14 @@ const Form = () => {
         alert("Adresse est requis");
         isValid = false;
       }
+      let count = 0;
+      for (let i = 0; i < categories.length; i++) {
+        if (categories[i].state) i++;
+      }
+      if (count == 0) {
+        alert("Saisir au moins une categories !");
+        isValid = false;
+      }
     }
     if (currentStep === 4) {
       if (formData.imageUrl === "") {
