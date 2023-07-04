@@ -28,20 +28,16 @@ const Form = () => {
 
   const handleDeleteImage = () => {
     console.log("Deleting image !");
-    console.log(formData.public_id);
     if (formData.public_id != null) {
       const token = jwt.current;
-      fetch(
-        "http://localhost:8080/api/Membre/DeleteFile?public_id=" +
-          formData.public_id,
-        {
-          method: "DELETE",
-          mode: "cors",
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        }
-      )
+      fetch("http://localhost:8080/api/Membre/DeleteFileCloudinary", {
+        method: "DELETE",
+        mode: "cors",
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+        body: { url: formData.imageUrl },
+      })
         .then((res) => {
           if (!res.ok) throw new Error();
           setFormData({
@@ -291,11 +287,11 @@ const Form = () => {
         alert("Adresse est requis");
         isValid = false;
       }
-      let count = 0;
-      for (let i = 0; i < categories.length; i++) {
-        if (categories[i].state) i++;
-      }
-      if (count == 0) {
+      if (
+        formData.categories == null ||
+        formData.categories == undefined ||
+        formData.categories.length == 0
+      ) {
         alert("Saisir au moins une categories !");
         isValid = false;
       }
@@ -445,7 +441,7 @@ const Form = () => {
                       <Autocomplete
                         options={regions}
                         freeSolo
-                        inputValue={formData.region}
+                        inputValue={formData.pays}
                         onInputChange={(event, newInputValue) => {
                           setFormData({ ...formData, pays: newInputValue });
                         }}

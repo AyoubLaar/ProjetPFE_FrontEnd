@@ -40,7 +40,7 @@ const AnonceDetails = ({ Data }) => {
               </Typography>
               <Typography variant="body1">Nom : {Data.nomAnonce}</Typography>{" "}
               <Typography variant="body1">
-                type : {Data.type == "location" ? "à louer " : "à acheter"}
+                type : {Data.type == "0" ? "à louer " : "à acheter"}
               </Typography>
               <Typography variant="body1">
                 {Data.pays + " , " + Data.ville + " " + Data.adresse}
