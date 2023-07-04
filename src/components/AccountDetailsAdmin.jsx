@@ -53,7 +53,11 @@ const AccountDetailsAdmin = ({ Data, userData, setData }) => {
       )
         .then((res) => {
           if (!res.ok) throw new Error();
-          setData({ ...userData, status: "adminRemoved" });
+          let A = userData.anonces;
+          for (let i = 0; i < userData.anonces; i++) {
+            A[i].status = "adminRemoved";
+          }
+          setData({ ...userData, status: "adminRemoved", anonces: A });
         })
         .catch((e) => {
           alert("Error toggling!");

@@ -249,6 +249,14 @@ const ModifierAnonce = () => {
         alert("Adresse est requis");
         isValid = false;
       }
+      if (
+        formData.categories == null ||
+        formData.categories == undefined ||
+        formData.categories.length == 0
+      ) {
+        alert("Saisir au moins une categories !");
+        isValid = false;
+      }
     }
     if (currentStep === 4) {
       if (
@@ -297,7 +305,7 @@ const ModifierAnonce = () => {
           headers: {
             Authorization: "Bearer " + token,
           },
-          body: JSON.stringify({ url: url }),
+          body: url,
         })
           .then((res) => {
             if (!res.ok) throw new Error();

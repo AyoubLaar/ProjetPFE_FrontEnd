@@ -28,6 +28,7 @@ const Form = () => {
 
   const handleDeleteImage = () => {
     console.log("Deleting image !");
+    console.log(formData.imageUrl);
     if (formData.public_id != null) {
       const token = jwt.current;
       fetch("http://localhost:8080/api/Membre/DeleteFileCloudinary", {
@@ -36,7 +37,7 @@ const Form = () => {
         headers: {
           Authorization: "Bearer " + token,
         },
-        body: { url: formData.imageUrl },
+        body: formData.imageUrl,
       })
         .then((res) => {
           if (!res.ok) throw new Error();
