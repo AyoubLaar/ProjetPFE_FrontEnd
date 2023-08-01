@@ -24,3 +24,4 @@ const isAdminAuthentified = () => {
 };
 
 export default isAdminAuthentified;
+
